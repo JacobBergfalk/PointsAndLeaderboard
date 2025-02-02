@@ -40,8 +40,17 @@ footer {
   width: auto;
 }
 
+.game-images{
+  height: 10rem;
+  width: auto;
+}
+
 .sidebar-images {
   width: 10rem;
   height: auto;
   max-width: 100%;
+}
+
+img {
+  transition: opacity 0.5s ease-in-out;
 }
