@@ -1,7 +1,47 @@
-body {
+header {
+  background-color: #007bff;
+  color: white;
+  display: flex;
+}
+nav {
+  background-color: #6c757d;
+  color: white;
 }
 
-.images {
-  height: 20rem;
+nav ul {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: repeat(3, 1fr);
+  list-style: none;
+  text-decoration: none;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+main {
+  background-color: #f8f9fa;
+}
+.content {
+  background-color: #e9ecef;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+footer {
+  background-color: #343a40;
+  color: white;
+}
+.header-images {
+  height: 7rem;
   width: auto;
+}
+
+.sidebar-images {
+  width: 10rem;
+  height: auto;
+  max-width: 100%;
 }
