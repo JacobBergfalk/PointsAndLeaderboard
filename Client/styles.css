@@ -1,8 +1,14 @@
 header {
-  background-color: #007bff;
   color: white;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
+.header img {
+  height: 7rem;
+  width: auto;
+}
+
 nav {
   background-color: #6c757d;
   color: white;
@@ -11,9 +17,16 @@ nav {
 nav ul {
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   list-style: none;
   text-decoration: none;
+}
+
+nav ul li {
+  max-width: 120px;
+  width: 120px;
+  text-align: center;
+  padding-left: 20px;
 }
 
 nav ul li a {
@@ -28,8 +41,7 @@ main {
 .content {
   background-color: #e9ecef;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
 }
 footer {
   background-color: #343a40;
@@ -40,7 +52,7 @@ footer {
   width: auto;
 }
 
-.game-images{
+.game-images {
   height: 10rem;
   width: auto;
 }
