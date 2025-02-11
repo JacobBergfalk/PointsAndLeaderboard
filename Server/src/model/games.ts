@@ -1,6 +1,6 @@
 export interface Game{
     betAmount: number;
-    potentialCreditWonOrLost: number;
+    potentialCreditWonOrLost: number; //Kanske borde heta typ creditChange, så kan man sätta den till +-50 typ
     win: boolean;
 }
 
