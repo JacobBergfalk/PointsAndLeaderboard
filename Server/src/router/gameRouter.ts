@@ -26,6 +26,8 @@ router.post("/", async(req: Request, res: Response) =>{
     }
 });
 
-router.get("/", async(req: Request, res: Response) => {
-    res.json({ balance: gameService["account"].getCredits() });
+router.get("/balance", async(req: Request, res: Response) => {
+    const result = await gameService.displayCredits();
+    res.json(result);
+    //res.json({ balance: gameService["account"].getCredits() });
 });

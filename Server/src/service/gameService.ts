@@ -13,12 +13,11 @@ export class GameService {
         const result = Math.random() < 0.5 ? "heads" : "tails";
         const win = choice === result;
         this.winOrLoseCredits(win, betAmount)
-        this.displayResult(win);
         return { betAmount, potentialCreditWonOrLost: betAmount, win, choice};
       }
 
-    async displayResult(win: boolean){
-        this.account.getCredits()
+    async displayCredits(): Promise<number>{
+        return this.account.getCredits()
     }
 
     public winOrLoseCredits(win: boolean, credits: number): void{
