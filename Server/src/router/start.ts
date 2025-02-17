@@ -1,7 +1,9 @@
 import express from "express";
-import { router as gameRouter1} from "../router/gameRouter1";
+import { router as gameRouter} from "./gameRouter";
 
 export const app = express();
 
 app.use(express.json());
-app.use("/game", gameRouter1);
+
+
+app.use("/game", gameRouter);

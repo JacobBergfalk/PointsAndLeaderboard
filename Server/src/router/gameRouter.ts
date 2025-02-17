@@ -9,11 +9,13 @@ router.post("/", async(req: Request, res: Response) =>{
     const { choice, betAmount } = req.body;
 
     if (!["heads", "tails"].includes(choice)) {
-        //return res.status(400).json({ error: "Invalid choice. Must be 'heads' or 'tails'." });
+        res.status(400).json({error: "Wrong input, need to be 'heads' or 'tails"});
+        return;
     }
 
     if (betAmount <= 0) {
-       // return res.status(400).json({ error: "Bet amount must be greater than zero." });
+        res.status(400).json({error: "Bet amount must be greater than 0"});
+        return;
     }
 
     try {
