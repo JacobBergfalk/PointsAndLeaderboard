@@ -1,11 +1,11 @@
-import { CoinFlipGame, Game } from "../model/games";
+import { CoinFlipGame } from "../model/games";
 import { Account } from "../model/account";
 
 export class GameService1 {
 
     private account: Account;
 
-    constructor(initialcredits: number= 0){
+    constructor(initialcredits: number){
         this.account = new Account(initialcredits);
     }
 
@@ -13,15 +13,15 @@ export class GameService1 {
         const result = Math.random() < 0.5 ? "heads" : "tails";
         const win = choice === result;
         this.winOrLoseCredits(win, betAmount)
-        this.displayResult(win);
-        return { betAmount, potentialCreditWonOrLost: betAmount, win };
+        //this.displayResult(win);
+        return { betAmount, potentialCreditWonOrLost: betAmount, win, choice};
       }
 
-    async displayResult(win: boolean): Promise<void>{
+    public displayResult(win: boolean){
         //Print eller nåt
     }
 
-    async winOrLoseCredits(win: boolean, credits: number): Promise<void>{
+    public winOrLoseCredits(win: boolean, credits: number): void{
         if (win){
             this.account.addCredits(credits)
         } else{
