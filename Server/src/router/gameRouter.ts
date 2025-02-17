@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
-import { GameService1 } from "../service/gameService1";
+import { GameService } from "../service/gameService";
 
 export const router = express.Router();
-const gameService = new GameService1(100); //Hundra gratiscredits leovegas
+const gameService = new GameService(100); //Hundra gratiscredits leovegas
 
 //Denna funkar inte för någon anledning får felsöka senare
 router.post("/", async(req: Request, res: Response) =>{

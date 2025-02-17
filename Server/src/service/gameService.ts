@@ -1,7 +1,7 @@
 import { CoinFlipGame } from "../model/games";
 import { Account } from "../model/account";
 
-export class GameService1 {
+export class GameService {
 
     private account: Account;
 
