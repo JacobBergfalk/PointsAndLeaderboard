@@ -1,0 +1,15 @@
+import "../assets/styles.css";
+
+function Header() {
+  return (
+    <header className="col-12">
+      <img
+        className="header-images"
+        src="../assets/images/logo-temp.png"
+        alt="logo"
+      />
+    </header>
+  );
+}
+
+export default Header;
