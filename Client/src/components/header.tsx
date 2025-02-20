@@ -5,7 +5,7 @@ function Header() {
     <header className="col-12">
       <img
         className="header-images"
-        src="../assets/images/logo-temp.png"
+        src="src/assets/images/logo-temp.png"
         alt="logo"
       />
     </header>

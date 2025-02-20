@@ -6,7 +6,7 @@ function Sidebar() {
     <div className="content">
       <img
         className="sidebar-images"
-        src="./assets/images/sidebarad2.png"
+        src="src/assets/images/sidebarad2.png"
         alt="ad"
       />
     </div>

@@ -4,7 +4,6 @@ import { GameService } from "../service/gameService";
 export const router = express.Router();
 const gameService = new GameService(100); //Hundra gratiscredits leovegas
 
-//Denna funkar inte för någon anledning får felsöka senare
 router.post("/", async(req: Request, res: Response) =>{
     const { choice, betAmount } = req.body;
 
@@ -26,6 +25,6 @@ router.post("/", async(req: Request, res: Response) =>{
     }
 });
 
-router.get("/", async(req: Request, res: Response) => {
+router.get("/balance", async(req: Request, res: Response) => {
     res.json({ balance: gameService["account"].getCredits() });
 });

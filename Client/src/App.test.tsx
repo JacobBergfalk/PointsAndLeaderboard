@@ -4,7 +4,7 @@ import App from './App';
 
 describe('App Component', () => {
   test('renders the heading Vite + React', () => {
-    render(<App />);
+    render(<App/>);
     const headingElement = screen.getByText(/Vite \+ React/i);
     expect(headingElement).toBeInTheDocument();
   });
@@ -31,4 +31,5 @@ describe('App Component', () => {
     const docsParagraph = screen.getByText(/Click on the Vite and React logos to learn more/i);
     expect(docsParagraph).toBeInTheDocument();
   });
+  
 });
