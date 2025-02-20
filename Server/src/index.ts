@@ -1,6 +1,5 @@
 import { app } from "./router/start";
-
-
+import cors from "cors";
 /**
 * App Variables
 */

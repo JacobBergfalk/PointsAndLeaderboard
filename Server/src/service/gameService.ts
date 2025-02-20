@@ -20,7 +20,7 @@ export class GameService {
         return this.account.getCredits()
     }
 
-    public winOrLoseCredits(win: boolean, credits: number): void{
+    private winOrLoseCredits(win: boolean, credits: number): void{
         if (win){
             this.account.addCredits(credits)
         } else{
