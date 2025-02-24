@@ -1,21 +1,22 @@
 import React from "react";
 import "../assets/styles.css";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
     <nav className="wd-flex justify-content-flex-start">
       <ul>
         <li className="navbar_links">
-          <a href="#">Profile</a>
+          <Link to="/profile">Profile</Link>
         </li>
         <li className="navbar_links">
-          <a href="#">Casino Slots</a>
+          <Link to="/casino">Casino Slots</Link>
         </li>
         <li className="navbar_links">
-          <a href="Game.html">Coin Flip</a>
+          <Link to="/coinflip">Coin Flip</Link>
         </li>
         <li className="navbar_links">
-          <a href="Game.html">Game</a>
+          <Link to="/game">Game</Link>
         </li>
       </ul>
     </nav>

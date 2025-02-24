@@ -1,5 +1,11 @@
+import Balance from "../components/Balance";
+
 function index() {
-  return <div className="container"></div>;
+  return (
+    <div className="container">
+      <Balance />
+    </div>
+  );
 }
 
-export default index();
+export default index;
