@@ -3,6 +3,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 .header img {
   height: 7rem;
@@ -14,6 +15,7 @@ nav {
   justify-content: flex-start;
   background-color: #6c757d;
   color: white;
+  width: 100%;
 }
 
 nav ul {
@@ -64,4 +66,28 @@ footer {
 
 img {
   transition: opacity 0.5s ease-in-out;
+}
+
+.quote-content {
+  flex: 1;
+  text-align: center;
+}
+
+.quote-container {
+  text-align: center;
+  font-size: 1.2rem;
+  color: rgb(0, 0, 0);
+  transition: opacity 0.5s ease-in-out;
+}
+
+.quote-container p {
+  font-size: 15px;
+}
+
+.fade-in {
+  opacity: 1;
+}
+
+.fade-out {
+  opacity: 0;
 }

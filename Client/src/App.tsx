@@ -16,8 +16,14 @@ function App() {
   return (
     <Router>
       <div className="container">
-        <Header />
-        <Navbar />
+        <div className="row">
+          <Header />
+        </div>
+
+        <div className="row">
+          <Navbar />
+        </div>
+
         <div className="row">
           <div className="col-md-1"></div>
           <main className="col-md-9">
