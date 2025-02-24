@@ -1,8 +1,9 @@
+import React from "react";
 import "../assets/styles.css";
 
 function Navbar() {
   return (
-    <nav className="col-12 d-flex justify-content-flex-start">
+    <nav className="wd-flex justify-content-flex-start">
       <ul>
         <li className="navbar_links">
           <a href="#">Profile</a>
