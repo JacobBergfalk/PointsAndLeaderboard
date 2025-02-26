@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+axios.defaults.withCredentials = true;
 
 const App = () => {
   const [data, setData] = useState<any>(null);

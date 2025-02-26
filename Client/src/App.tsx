@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 
 import Index from "./pages/index";
 import CoinFlip from "./pages/coinflip";
+import User from "./pages/Registration";
 
 function App() {
   return (

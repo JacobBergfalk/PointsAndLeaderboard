@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+axios.defaults.withCredentials = true;
+
 function coinflip() {
   const [imageSrc, setImageSrc] = useState("images/coin.png");
   const [balance, setBalance] = useState<number | null>(null);
