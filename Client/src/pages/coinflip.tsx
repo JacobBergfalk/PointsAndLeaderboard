@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -33,11 +33,26 @@ function coinflip() {
     }
   };
 
+  useEffect(() => {
+    const getBalance = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/game/balance"); //Skickar get till localhosten
+        const balance = response.data.balance;
+        setBalance(balance);
+      } catch (err) {
+        setError("An error occurred while fetching data");
+        console.error(err);
+      }
+    };
+
+    getBalance(); // typescript lmao
+  });
+
   return (
     <div className="container">
       <img className="game-images" src={imageSrc} alt="coin" />
-      <p>Balance: {balance !== null ? `${balance} coins` : "Loading..."}</p>
 
+      <p>Balance: {balance !== null ? `${balance} coins` : "Loading..."}</p>
       <div className="bet-container">
         <label>Bet Amount:</label>
         <input
@@ -46,7 +61,6 @@ function coinflip() {
           onChange={(e) => setBetAmount(Number(e.target.value))}
         />
       </div>
-
       <button className="btn btn-primary mt-3" onClick={handleFlip}>
         Vinn pengar knappen
       </button>
