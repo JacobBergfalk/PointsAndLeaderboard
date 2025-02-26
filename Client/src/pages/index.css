@@ -1,0 +1,43 @@
+.game-gallery-container {
+  background: #f8f8f8;
+  padding: 20px;
+  width: 90%;
+  margin: auto;
+}
+
+.game-gallery-container h2 {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.game-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.game-card {
+  width: 160px;
+  text-align: center;
+}
+
+.game-image {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.game-image:hover {
+  transform: scale(1.05);
+}
+
+.game-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #228b22;
+  margin-top: 5px;
+}

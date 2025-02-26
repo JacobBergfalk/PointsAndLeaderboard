@@ -1,21 +1,20 @@
-header {
-  color: #f8f9fa;
+header,
+nav {
+  width: 100%;
+  max-width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  background-color: #f8f9fa;
+  color: white;
 }
+
 .header img {
   height: 7rem;
   width: auto;
 }
 
 nav {
-  display: flex;
-  justify-content: flex-start;
   background-color: #6c757d;
-  color: white;
-  width: 100%;
 }
 
 nav ul {
@@ -39,11 +38,7 @@ nav ul li a {
 main {
   background-color: #f8f9fa;
 }
-.content {
-  background-color: #e9ecef;
-  display: flex;
-  width: 100%;
-}
+
 footer {
   background-color: #343a40;
   color: white;

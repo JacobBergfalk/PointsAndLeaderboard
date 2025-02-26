@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // hugo hustle
 
-import Header from "./components/header";
+import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Footer from "./components/Footer";
@@ -15,7 +15,7 @@ import CoinFlip from "./pages/coinflip";
 function App() {
   return (
     <Router>
-      <div className="container">
+      <div className="container-fluid">
         <div className="row">
           <Header />
         </div>

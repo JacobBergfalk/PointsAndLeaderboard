@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../assets/styles.css"; // Se till att CSS-filen innehåller fade-animationen
 
 const quotes = [
-  "99% of Gamblers Quit Before They Win Big - Anonymous",
+  "99% of Gamblers Quit Before They Win Big - Erik Ersättning",
   "A Billion Zillion Gillion Dollars - Jacob Jackpot",
   "I Can Quit When I Want To - Hugo Hustle.",
 ];

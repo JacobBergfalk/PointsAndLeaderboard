@@ -1,4 +1,3 @@
-import React from "react";
 import "../assets/styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
@@ -6,7 +5,7 @@ import { Link } from "react-router-dom";
 function Navbar() {
   return (
     <>
-      <nav className="wd-flex justify-content-flex-start">
+      <nav>
         <ul>
           <li className="navbar_links">
             <Link to="/profile">Profile</Link>
@@ -22,8 +21,8 @@ function Navbar() {
           </li>
         </ul>
       </nav>
-      <div className="row">
-        <div className="col-12 d-flex align-items-center justify-content-center">
+      <div>
+        <div className=" d-flex align-items-center justify-content-center">
           <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
             <img
               className="header-images"

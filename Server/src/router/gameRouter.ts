@@ -8,7 +8,7 @@ router.post("/coinflip", async (req: Request, res: Response) => {
   const { choice, betAmount } = req.body;
 
   if (choice !== "Heads") {
-    res.status(400).json({ error: "Invalid choice" });
+    res.status(406).json({ error: "Invalid choice" });
   }
 
   try {

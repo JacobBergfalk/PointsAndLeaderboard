@@ -22,5 +22,5 @@ test("Test om rätt input", async () => {
     });
 
   console.log("Invalid input response:", response.body); // Logga svaret
-  expect(response.status).toBe(400);
+  expect(response.status).toBe(406);
 });
