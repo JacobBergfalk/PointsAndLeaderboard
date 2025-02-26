@@ -26,7 +26,7 @@ function coinflip() {
       }
 
       setTimeout(() => {
-        setImageSrc("images/coin.png"); // Återställ efter 5 sek
+        setImageSrc("images/coin.png"); // Återställ efter 0.5 sek
       }, 500);
     } catch (err) {
       setError("Ett fel uppstod vid anropp av server");
