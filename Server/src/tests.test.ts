@@ -1,5 +1,5 @@
 import request from "supertest";
-import { app } from "./start"; // Se till att detta pekar rätt till din Express-app
+import { app } from "../start"; // Se till att detta pekar rätt till din Express-app
 
 test("should return a valid response", async () => {
   const response = await request(app)

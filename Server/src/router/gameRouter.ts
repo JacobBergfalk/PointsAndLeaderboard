@@ -23,3 +23,7 @@ router.post("/coinflip", async (req: Request, res: Response) => {
 router.get("/balance", async (req: Request, res: Response) => {
   res.json({ balance: gameService["account"].getCredits() });
 });
+
+router.post("/register", async (req: Request, res: Response) => {});
+
+router.post("/login", async (req: Request, res: Response) => {});

@@ -19,6 +19,11 @@ function notificationModal(param: modal) {
     param.onOpenLogin();
   };
 
+  const registerUser = async () => {
+    try {
+    } catch {}
+  };
+
   return (
     <div className="modal-overlay" onClick={param.onClose}>
       {/* Opacity */}

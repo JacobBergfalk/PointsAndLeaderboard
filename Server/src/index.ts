@@ -1,4 +1,4 @@
-import { app } from "./start";
+import { app } from "../start";
 
 /**
  * App Variables
