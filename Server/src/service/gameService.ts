@@ -1,5 +1,6 @@
 import { CoinFlipGame } from "../model/games";
-import { Account } from "../model/account";
+import { Account, addUser, checkUser, logoutUser } from "../model/account";
+
 
 export class GameService {
   private account: Account;
@@ -30,4 +31,26 @@ export class GameService {
       this.account.removeCredits(credits);
     }
   }
+
+  async loginUser(username: string, password: string, req: any) {
+    if(checkUser(username, password)) {
+      req.session.username = username;
+      return true;
+    }
+    return false;
+
+  }
+
+  async registerUser(username: string, password: string, req: any) {
+    if(addUser(username, password)) {
+      req.session.username = username;
+      return true;
+    }
+    return false;
+  }
+
+  async logoutUser(username: string, req: any) {
+    delete req.session.username;
+  }
+  
 }

@@ -1,5 +1,9 @@
 import { useState } from "react";
 import "./registrationLogin.css";
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
+
 
 interface modal {
   isOpen: boolean;
@@ -12,7 +16,10 @@ function notificationModal(param: modal) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
   const [gambleTime, setGambleTime] = useState(false);
+
+  
 
   const switchModal = () => {
     param.onClose();
@@ -21,6 +28,18 @@ function notificationModal(param: modal) {
 
   const registerUser = async () => {
     try {
+      const response = await axios.post("http://localhost:8080/game/register", {
+        username: username,
+        password: password,
+        rePassword: password,
+      });
+
+      const { success, message } = response.data;
+
+      if(success) {
+        param.onClose()
+      }
+
     } catch {}
   };
 
@@ -60,11 +79,13 @@ function notificationModal(param: modal) {
           <input
             id="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={rePassword}
+            onChange={(e) => setRePassword(e.target.value)}
             placeholder="Re-Type Password"
           />
         </div>
+
+        {/* CHECK IF PASSWORDS MATCH OR NOT*/ }
 
         <div className="checkbox-container">
           <input
