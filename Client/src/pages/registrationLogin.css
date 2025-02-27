@@ -21,9 +21,12 @@
   position: relative;
 }
 
+.modal-content h2 {
+  color: #333;
+}
+
 .input-container {
   text-align: left;
-  margin: 15px 0;
 }
 
 .input-container label {
@@ -41,16 +44,12 @@
   font-size: 16px;
 }
 
-.input-container textarea {
-  height: 80px;
-  resize: none;
-}
-
 .close-button {
   position: absolute;
   top: 10px;
   right: 10px;
   background: transparent;
+  border-radius: 7px;
   border: none;
   font-size: 24px;
   cursor: pointer;
@@ -58,5 +57,40 @@
 }
 
 .close-button:hover {
-  color: red;
+  background-color: red;
+}
+
+.register-btn {
+  margin-top: 10px;
+  border-radius: 7px;
+  font-size: 18px;
+  width: 70%;
+  height: 40px;
+  justify-items: center;
+  border: none;
+}
+
+p {
+  color: #333;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin: 10px 0px;
+  color: #333;
+  text-align: left;
+}
+
+.checkbox-container label {
+  font-size: 15px;
+  margin: 0px 5px;
+}
+.switch-modal-text {
+  padding-top: 14px;
+}
+.switch-modal-text:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #0000ff;
 }

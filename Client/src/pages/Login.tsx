@@ -4,6 +4,7 @@ import "./registrationLogin.css";
 interface modal {
   isOpen: boolean;
   onClose: () => void;
+  onOpenRegistration: () => void;
 }
 
 function notificationModal(param: modal) {
@@ -11,6 +12,12 @@ function notificationModal(param: modal) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const switchModal = () => {
+    param.onClose();
+    param.onOpenRegistration();
+  };
 
   return (
     <div className="modal-overlay" onClick={param.onClose}>
@@ -19,6 +26,8 @@ function notificationModal(param: modal) {
         <button className="close-button" onClick={param.onClose}>
           &times;
         </button>
+
+        <h2>Login</h2>
 
         <div className="input-container">
           <label htmlFor="Username">Username</label>
@@ -35,14 +44,22 @@ function notificationModal(param: modal) {
           <label htmlFor="Password">Password</label>
           <input
             id="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="password"
           />
+          <button type="button" onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? "Hide" : "Show"}
+          </button>
         </div>
 
-        <button className="send-button">Skicka</button>
+        <div>
+          <button className="login-btn">Login</button>
+          <p className="switch-modal-text" onClick={switchModal}>
+            Dont have an account?
+          </p>
+        </div>
       </div>
     </div>
   );

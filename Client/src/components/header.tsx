@@ -19,7 +19,11 @@ function Header() {
         <button className="login-button" onClick={() => setLoginOpen(true)}>
           Log In
         </button>
-        <Login isOpen={loginOpen} onClose={() => setLoginOpen(false)} />
+        <Login
+          isOpen={loginOpen}
+          onClose={() => setLoginOpen(false)}
+          onOpenRegistration={() => setRegistrationOpen(true)}
+        />
 
         <button
           className="registration-button"
@@ -30,6 +34,7 @@ function Header() {
         <Registration
           isOpen={registrationOpen}
           onClose={() => setRegistrationOpen(false)}
+          onOpenLogin={() => setLoginOpen(true)}
         />
       </div>
     </header>

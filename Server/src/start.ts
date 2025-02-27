@@ -1,6 +1,6 @@
 import cors from "cors";
 import express from "express";
-import { router as gameRouter } from "./gameRouter";
+import { router as gameRouter } from "./router/gameRouter";
 
 import session from "express-session";
 import dotenv from "dotenv";

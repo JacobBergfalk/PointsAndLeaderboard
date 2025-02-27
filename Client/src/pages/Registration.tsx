@@ -4,6 +4,7 @@ import "./registrationLogin.css";
 interface modal {
   isOpen: boolean;
   onClose: () => void;
+  onOpenLogin: () => void;
 }
 
 function notificationModal(param: modal) {
@@ -11,6 +12,12 @@ function notificationModal(param: modal) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [gambleTime, setGambleTime] = useState(false);
+
+  const switchModal = () => {
+    param.onClose();
+    param.onOpenLogin();
+  };
 
   return (
     <div className="modal-overlay" onClick={param.onClose}>
@@ -20,6 +27,7 @@ function notificationModal(param: modal) {
           &times;
         </button>
 
+        <h2>Create User</h2>
         <div className="input-container">
           <label htmlFor="Username">Username</label>
           <input
@@ -42,7 +50,34 @@ function notificationModal(param: modal) {
           />
         </div>
 
-        <button className="send-button">Skicka</button>
+        <div className="input-container">
+          <label htmlFor="Password">Re-Type Password</label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Re-Type Password"
+          />
+        </div>
+
+        <div className="checkbox-container">
+          <input
+            type="checkbox"
+            id="checkbox"
+            checked={gambleTime}
+            onChange={(e) => setGambleTime(e.target.checked)}
+            className="mr-2"
+          />
+          <label htmlFor="gambleTime">Gamble Time?</label>
+        </div>
+
+        <div>
+          <button className="register-btn">Register</button>
+          <p className="switch-modal-text" onClick={switchModal}>
+            Already have an account?
+          </p>
+        </div>
       </div>
     </div>
   );
