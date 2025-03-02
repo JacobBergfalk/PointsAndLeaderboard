@@ -1,6 +1,5 @@
 import { CoinFlipGame } from "../model/games";
-import { Account, addUser, checkUser, logoutUser } from "../model/account";
-
+import { Account, addUser, checkUser } from "../model/account";
 
 export class GameService {
   private account: Account;
@@ -33,16 +32,15 @@ export class GameService {
   }
 
   async loginUser(username: string, password: string, req: any) {
-    if(checkUser(username, password)) {
+    if (await checkUser(username, password)) {
       req.session.username = username;
       return true;
     }
     return false;
-
   }
 
   async registerUser(username: string, password: string, req: any) {
-    if(addUser(username, password)) {
+    if (addUser(username, password)) {
       req.session.username = username;
       return true;
     }
@@ -52,5 +50,4 @@ export class GameService {
   async logoutUser(username: string, req: any) {
     delete req.session.username;
   }
-  
 }
