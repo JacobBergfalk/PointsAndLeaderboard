@@ -29,13 +29,13 @@ export async function checkUser(
   if (!user) return false;
   return bcrypt.compare(password, user.password);
 }
+
 /*
 const getCredits: any(User: username) = () => {
   return this.balance;
 }
 
 export const addCredits: any(amount : number) : void => {
-
 }
 
 const removeCredits: any (amount : number): void {

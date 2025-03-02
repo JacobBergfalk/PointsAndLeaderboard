@@ -13,6 +13,47 @@ nav {
   width: auto;
 }
 
+.user-buttons {
+  margin: 10px;
+}
+
+/* CSS */
+.login-button,
+.registration-button {
+  align-items: center;
+  border-radius: 10px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 600;
+  max-width: 480px;
+  min-height: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  transition: 0.2s;
+  margin: 5px;
+}
+
+.login-button:hover,
+.registration-button:hover {
+  background-color: #0c3870;
+  color: #ffffff;
+}
+
+.login-button {
+  background-color: #ffffff;
+  color: #0c3870;
+
+  border: 2px solid #303ebc;
+}
+
+.registration-button {
+  border: 0;
+  background-color: #0a66c2;
+}
+
 nav {
   background-color: #6c757d;
 }
