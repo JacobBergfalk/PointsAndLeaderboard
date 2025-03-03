@@ -64,6 +64,7 @@ function coinflip() {
       <button className="btn btn-primary mt-3" onClick={handleFlip}>
         Vinn pengar knappen
       </button>
+      {error && <p style={{ color: "red", fontSize: "12px" }}>{error}</p>}
     </div>
   );
 }
