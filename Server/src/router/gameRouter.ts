@@ -43,6 +43,15 @@ router.post("/register", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/session", async (req: Request, res: Response) => {
+  const currentUser = gameService.isLoggedIn(req);
+  if (await currentUser) {
+    res.json({ loggedIn: true });
+  } else {
+    res.json({ loggedIn: false });
+  }
+});
+
 router.post("/login", async (req: Request, res: Response) => {
   const { username, password } = req.body;
 

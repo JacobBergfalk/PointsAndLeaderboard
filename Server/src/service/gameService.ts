@@ -57,6 +57,10 @@ export class GameService {
     delete req.session.username;
   }
 
+  async isLoggedIn(req: any) {
+    return req.session.username ?? undefined; // check if username ===  undefined
+  }
+
   async addCredits(req: any, amount: number): Promise<boolean> {
     if (!req.session.username) return false;
     return await updateBalance(req.session.username, amount);

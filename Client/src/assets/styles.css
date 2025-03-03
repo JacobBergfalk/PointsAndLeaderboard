@@ -19,7 +19,8 @@ nav {
 
 /* CSS */
 .login-button,
-.registration-button {
+.registration-button,
+.logout-button {
   align-items: center;
   border-radius: 10px;
   color: #ffffff;
@@ -37,7 +38,8 @@ nav {
 }
 
 .login-button:hover,
-.registration-button:hover {
+.registration-button:hover,
+.logout-button {
   background-color: #0c3870;
   color: #ffffff;
 }
@@ -52,6 +54,11 @@ nav {
 .registration-button {
   border: 0;
   background-color: #0a66c2;
+}
+
+.logout-button {
+  border: 0;
+  background-color: #6b7c8e;
 }
 
 nav {

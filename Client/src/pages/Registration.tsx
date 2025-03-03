@@ -8,6 +8,7 @@ interface modal {
   isOpen: boolean;
   onClose: () => void;
   onOpenLogin: () => void;
+  onRegisterSuccess: () => void;
 }
 
 function notificationModal(param: modal) {
@@ -42,6 +43,7 @@ function notificationModal(param: modal) {
 
       if (success) {
         param.onClose();
+        param.onRegisterSuccess();
       } else {
         alert(message);
       }
