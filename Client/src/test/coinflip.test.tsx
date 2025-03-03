@@ -1,4 +1,10 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import CoinFlip from "../pages/coinflip";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -12,6 +18,24 @@ test("should render CoinFlip component", () => {
 });
 
 const mockAxios = new MockAdapter(axios);
+
+afterEach(() => {
+  mockAxios.reset();
+});
+
+test("should fetch and display balance on mount", async () => {
+  mockAxios
+    .onGet("http://localhost:8080/game/balance")
+    .reply(200, { balance: 100 });
+
+  await act(async () => {
+    render(<CoinFlip />);
+  });
+
+  await waitFor(() =>
+    expect(screen.getByText(/Balance: 100 coins/)).toBeInTheDocument()
+  );
+});
 
 test("should update image on win", async () => {
   mockAxios
@@ -48,14 +72,14 @@ test("should update image on loss", async () => {
 });
 
 test("should show error message on server error", async () => {
-  mockAxios.onPost("http://localhost:8080/game/coinflip").reply(500); // Corregera till korrect error meddelande
+  mockAxios.onPost("http://localhost:8080/game/coinflip").reply(500);
 
   render(<CoinFlip />);
   fireEvent.click(screen.getByText(/Vinn pengar knappen/i));
 
   await waitFor(() =>
     expect(
-      screen.getByText(/Ett fel uppstod vid anropp av server/)
+      screen.getByText(/An error occurred while fetching data/)
     ).toBeInTheDocument()
   );
 });

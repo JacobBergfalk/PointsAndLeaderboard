@@ -31,7 +31,8 @@ function coinflip() {
         setImageSrc("images/coin.png"); // Återställ efter 0.5 sek
       }, 500);
     } catch (err) {
-      setError("Ett fel uppstod vid anropp av server");
+      setError("An error occurred while fetching data");
+      console.error(error);
     }
   };
 
@@ -43,7 +44,7 @@ function coinflip() {
         setBalance(balance);
       } catch (err) {
         setError("An error occurred while fetching data");
-        console.error(err);
+        console.error(error);
       }
     };
 
@@ -66,6 +67,7 @@ function coinflip() {
       <button className="btn btn-primary mt-3" onClick={handleFlip}>
         Vinn pengar knappen
       </button>
+      {error && <p style={{ color: "red", fontSize: "12px" }}>{error}</p>}
     </div>
   );
 }

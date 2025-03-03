@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, act } from "react";
 import "../assets/styles.css"; // Se till att CSS-filen innehåller fade-animationen
 
 const quotes = [
@@ -13,7 +13,9 @@ function QuotesRotator() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setFade(false); // Börja fade-out
+      act(() => {
+        setFade(false); // Börja fade-out
+      });
 
       setTimeout(() => {
         setIndex((prevIndex) => (prevIndex + 1) % quotes.length);

@@ -4,14 +4,13 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // hugo hustle
 
-import Header from "./components/Header";
+import Header from "./components/header";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Footer from "./components/Footer";
 
 import Index from "./pages/index";
 import CoinFlip from "./pages/coinflip";
-import User from "./pages/Registration";
 
 function App() {
   return (
