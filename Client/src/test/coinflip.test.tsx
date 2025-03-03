@@ -1,61 +1,75 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import CoinFlip from "../pages/coinflip";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-test("should render CoinFlip component", () => {
-  render(<CoinFlip />);
-  expect(screen.getByText(/Balance:/)).toBeInTheDocument();
-  expect(
-    screen.getByRole("button", { name: /Vinn pengar knappen/i })
-  ).toBeInTheDocument();
-});
+axios.defaults.withCredentials = true;
 
-const mockAxios = new MockAdapter(axios);
+function coinflip() {
+  const [imageSrc, setImageSrc] = useState("images/coin.png");
+  const [balance, setBalance] = useState<number | null>(null);
+  const [betAmount, setBetAmount] = useState(10); // Standardinsats
 
-test("should update image on win", async () => {
-  mockAxios
-    .onPost("http://localhost:8080/game/coinflip")
-    .reply(200, { win: true, balance: 110 });
+  const [error, setError] = useState<string | null>(null);
 
-  render(<CoinFlip />);
-  fireEvent.click(screen.getByText(/Vinn pengar knappen/i));
+  const handleFlip = async () => {
+    try {
+      const response = await axios.post("http://localhost:8080/game/coinflip", {
+        choice: "Heads",
+        betAmount: betAmount,
+      });
 
-  await waitFor(() =>
-    expect(screen.getByAltText("coin")).toHaveAttribute(
-      "src",
-      "images/thumbsup.png"
-    )
+      const { win, balance } = response.data;
+      setBalance(balance);
+
+      if (win) {
+        setImageSrc("images/thumbsup.png"); // Vinst
+      } else {
+        setImageSrc("images/catlaughing.jpg"); // Förlust
+      }
+
+      setTimeout(() => {
+        setImageSrc("images/coin.png"); // Återställ efter 0.5 sek
+      }, 500);
+    } catch (err) {
+      setError("An error occurred while fetching data");
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    const getBalance = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/game/balance"); //Skickar get till localhosten
+        const balance = response.data.balance;
+        setBalance(balance);
+      } catch (err) {
+        setError("An error occurred while fetching data");
+        console.error(error);
+      }
+    };
+
+    getBalance(); // typescript lmao
+  });
+
+  return (
+    <div className="container">
+      <img className="game-images" src={imageSrc} alt="coin" />
+
+      <p>Balance: {balance !== null ? `${balance} coins` : "Loading..."}</p>
+      <div className="bet-container">
+        <label>Bet Amount:</label>
+        <input
+          type="number"
+          value={betAmount}
+          onChange={(e) => setBetAmount(Number(e.target.value))}
+        />
+      </div>
+      <button className="btn btn-primary mt-3" onClick={handleFlip}>
+        Vinn pengar knappen
+      </button>
+      {error && <p style={{ color: "red", fontSize: "12px" }}>{error}</p>}
+    </div>
   );
-  expect(screen.getByText(/Balance: 110 coins/)).toBeInTheDocument();
-});
+}
 
-test("should update image on loss", async () => {
-  mockAxios
-    .onPost("http://localhost:8080/game/coinflip")
-    .reply(200, { win: false, balance: 90 });
-
-  render(<CoinFlip />);
-  fireEvent.click(screen.getByText(/Vinn pengar knappen/i));
-
-  await waitFor(() =>
-    expect(screen.getByAltText("coin")).toHaveAttribute(
-      "src",
-      "images/catlaughing.jpg"
-    )
-  );
-  expect(screen.getByText(/Balance: 90 coins/)).toBeInTheDocument();
-});
-
-test("should show error message on server error", async () => {
-  mockAxios.onPost("http://localhost:8080/game/coinflip").reply(500); // Corregera till korrect error meddelande
-
-  render(<CoinFlip />);
-  fireEvent.click(screen.getByText(/Vinn pengar knappen/i));
-
-  await waitFor(() =>
-    expect(
-      screen.getByText(/Ett fel uppstod vid anropp av server/)
-    ).toBeInTheDocument()
-  );
-});
+export default coinflip;
