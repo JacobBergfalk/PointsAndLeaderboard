@@ -14,7 +14,7 @@ router.post("/coinflip", async (req: Request, res: Response) => {
 
   try {
     const result = await gameService.flipCoin(choice, betAmount);
-    const balance = gameService["account"].getCredits();
+    const balance = await gameService["account"].getCredits();
     res.json({ win: result.win, balance });
   } catch (error) {
     res.status(500).json({ success: false });
