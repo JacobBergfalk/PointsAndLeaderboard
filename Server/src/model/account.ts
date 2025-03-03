@@ -8,10 +8,14 @@ export interface User {
 
 const users: User[] = []; // fucking array
 
+function findUser(username: string): User | undefined {
+  return users.find((user) => user.username === username);
+}
+
 export function addUser(username: string, password: string): boolean {
   const salt = bcrypt.genSaltSync(10);
 
-  if (users.find((user) => user.username === username)) return false;
+  if (findUser(username)) return false;
 
   users.push({
     username: username,
@@ -21,13 +25,31 @@ export function addUser(username: string, password: string): boolean {
   return true;
 }
 
-export async function checkUser(
+export async function authenticateUser(
   username: string,
   password: string
 ): Promise<boolean> {
-  const user = users.find((user) => user.username === username);
+  const user = findUser(username);
   if (!user) return false;
   return bcrypt.compare(password, user.password);
+}
+
+export async function updateBalance(username: string, amount: number) {
+  const user = findUser(username);
+  if (!user) return false;
+
+  if (user.balance + amount < 0) return false; // icke negativt
+  user.balance += amount;
+  return true;
+}
+
+export async function getCredits(username: string) {
+  return findUser(username)?.balance; // works?
+
+  /* 
+  const user = findUser(username);
+  return user ? user.balance : null;
+  */
 }
 
 /*

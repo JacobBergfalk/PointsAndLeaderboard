@@ -1,5 +1,11 @@
 import { CoinFlipGame } from "../model/games";
-import { Account, addUser, checkUser } from "../model/account";
+import {
+  Account,
+  addUser,
+  authenticateUser,
+  updateBalance,
+  getCredits,
+} from "../model/account";
 
 export class GameService {
   private account: Account;
@@ -32,7 +38,7 @@ export class GameService {
   }
 
   async loginUser(username: string, password: string, req: any) {
-    if (await checkUser(username, password)) {
+    if (await authenticateUser(username, password)) {
       req.session.username = username;
       return true;
     }
@@ -49,5 +55,20 @@ export class GameService {
 
   async logoutUser(username: string, req: any) {
     delete req.session.username;
+  }
+
+  async addCredits(req: any, amount: number): Promise<boolean> {
+    if (!req.session.username) return false;
+    return await updateBalance(req.session.username, amount);
+  }
+
+  async removeCredits(req: any, amount: number): Promise<boolean> {
+    if (!req.session.username) return false;
+    return await updateBalance(req.session.username, -amount);
+  }
+
+  async getCredits(req: any): Promise<number | undefined> {
+    if (!req.session.username) return undefined;
+    return await getCredits(req.session.username);
   }
 }

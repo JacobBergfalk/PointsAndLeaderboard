@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { GameService } from "../service/gameService";
+import { authenticateUser } from "../model/account";
 
 export const router = express.Router();
 const gameService = new GameService(100); //Hundra gratiscredits leovegas
@@ -16,7 +17,7 @@ router.post("/coinflip", async (req: Request, res: Response) => {
     const balance = gameService["account"].getCredits();
     res.json({ win: result.win, balance });
   } catch (error) {
-    res.status(500).json({success: false, });
+    res.status(500).json({ success: false });
   }
 });
 
@@ -24,43 +25,86 @@ router.get("/balance", async (req: Request, res: Response) => {
   res.json({ balance: gameService["account"].getCredits() });
 });
 
-
-
 // REGISTER LOGIN AND LOGOUT
 
 router.post("/register", async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
-  if(!username || !password) {
-    res.status(409).json({ success: false, message: "Requires Username and password"});
+  if (!username || !password) {
+    res
+      .status(409)
+      .json({ success: false, message: "Requires Username and password" });
   }
 
-  if(await gameService.registerUser(username, password, req)) {
-    res.status(201).json({ success: true, message: "User registered"});
+  if (await gameService.registerUser(username, password, req)) {
+    res.status(201).json({ success: true, message: "User registered" });
   } else {
-    res.status(500).json({ success: false, message: "Something went wrong"});
+    res.status(500).json({ success: false, message: "Something went wrong" });
   }
- 
 });
 
 router.post("/login", async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
-  if(!username || !password) {
-    res.status(409).json({ success: false, message: "Requires Username and password"});
+  if (!username || !password) {
+    res
+      .status(409)
+      .json({ success: false, message: "Requires Username and password" });
   }
 
-  if(await gameService.loginUser(username, password, req)) {
-    res.status(201).json({ success: true, message: "Login successful"});
+  if (await gameService.loginUser(username, password, req)) {
+    res.status(201).json({ success: true, message: "Login successful" });
   } else {
-    res.status(500).json({ success: false, message: "Something went wrong"});
+    res.status(500).json({ success: false, message: "Something went wrong" });
   }
- 
 });
 
 router.post("/logout", async (req: Request, res: Response) => {
   const { username } = req.body;
   await gameService.logoutUser(username, req);
-  return  res.status(201).json({ success: true, message: "Logout successful"});
+  res.status(201).json({ success: true, message: "Logout successful" });
 });
 
+router.get("/balance/get", async (req: Request, res: Response) => {
+  const balance = await gameService.getCredits(req);
+  if (balance !== null) {
+    res.json({ success: true, balance });
+  } else {
+    res.status(401).json({ success: false, message: "User not logged in" });
+  }
+});
+
+router.post("/balance/add", async (req: Request, res: Response) => {
+  const { amount } = req.body;
+  if (typeof amount !== "number") {
+    res.status(400).json({ success: false, message: "Invalid amount" });
+    return;
+  }
+
+  const success = await gameService.addCredits(req, amount);
+  if (success) {
+    const balance = await gameService.getCredits(req);
+    res.json({ success: true, balance });
+  } else {
+    res.status(400).json({ success: false, message: "Failed to add credits" });
+  }
+});
+
+router.post("/balance/remove", async (req: Request, res: Response) => {
+  const { amount } = req.body;
+  if (typeof amount !== "number") {
+    res.status(400).json({ success: false, message: "Invalid amount" });
+    return;
+  }
+
+  const success = await gameService.removeCredits(req, amount);
+  if (success) {
+    const balance = await gameService.getCredits(req);
+    res.json({ success: true, balance });
+  } else {
+    res.status(400).json({
+      success: false,
+      message: "Insufficient credits or failed transaction",
+    });
+  }
+});

@@ -4,7 +4,6 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-
 interface modal {
   isOpen: boolean;
   onClose: () => void;
@@ -18,8 +17,7 @@ function notificationModal(param: modal) {
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [gambleTime, setGambleTime] = useState(false);
-
-  
+  const [errorMessage, setErrorMessage] = useState(""); // New state for error message
 
   const switchModal = () => {
     param.onClose();
@@ -27,20 +25,30 @@ function notificationModal(param: modal) {
   };
 
   const registerUser = async () => {
+    if (password !== rePassword) {
+      setErrorMessage("Passwords does not match");
+      return;
+    }
+
+    setErrorMessage(""); // resets if passwords match
+
     try {
       const response = await axios.post("http://localhost:8080/game/register", {
-        username: username,
-        password: password,
-        rePassword: password,
+        username,
+        password,
       });
 
       const { success, message } = response.data;
 
-      if(success) {
-        param.onClose()
+      if (success) {
+        param.onClose();
+      } else {
+        alert(message);
       }
-
-    } catch {}
+    } catch (error) {
+      console.error("error", error);
+      alert("There was an error when registrating");
+    }
   };
 
   return (
@@ -82,10 +90,14 @@ function notificationModal(param: modal) {
             value={rePassword}
             onChange={(e) => setRePassword(e.target.value)}
             placeholder="Re-Type Password"
+            style={{ borderColor: errorMessage ? "red" : "" }}
           />
+          {errorMessage && (
+            <p style={{ color: "red", fontSize: "12px" }}>{errorMessage}</p>
+          )}
         </div>
 
-        {/* CHECK IF PASSWORDS MATCH OR NOT*/ }
+        {/* CHECK IF PASSWORDS MATCH OR NOT*/}
 
         <div className="checkbox-container">
           <input
@@ -99,7 +111,9 @@ function notificationModal(param: modal) {
         </div>
 
         <div>
-          <button className="register-btn">Register</button>
+          <button className="register-btn" onClick={registerUser}>
+            Register
+          </button>
           <p className="switch-modal-text" onClick={switchModal}>
             Already have an account?
           </p>
