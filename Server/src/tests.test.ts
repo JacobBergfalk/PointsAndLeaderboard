@@ -1,26 +1,22 @@
-import request from "supertest";
+import session from "supertest-session";
 import { app } from "../start"; 
-import e from "cors";
+import { SuperTest, Test } from "supertest"; // 🟢 Importera typer
 
-/*test("should return a valid response", async () => {
-  const response = await request(app)
-    .post("/game") 
-    .send({
-      choice: "heads",
-      betAmount: 100,
-    });
 
-  console.log("Valid input response:", response.body); // Logga svaret
-  expect(response.status).toBe(200);
-}); */
+let testSession: SuperTest<Test>;
 
-test("fetch credits for user session, should not work since it isnt logged in", async() => {
-  const res = await request(app).get("/game/balance/get")
-  expect(res.status).toBe(401);
-})
 
-test("Should register a user", async() => {
-  const res = await request(app).post("/game/register").send({
+beforeEach(() => {
+  testSession = session(app); // Skapa en ny session för varje test
+});
+
+test("fetch credits for user session, should not work since it isnt logged in", async () => {
+  const res = await testSession.get("/game/balance/get");
+  expect(res.status).toBe(401); // Användaren är inte inloggad, bör få 401
+});
+
+test("Should register a user", async () => {
+  const res = await testSession.post("/game/register").send({
     username: "newUser",
     password: "0000"
   });
@@ -28,8 +24,8 @@ test("Should register a user", async() => {
   expect(res.body.success).toBe(true);
 });
 
-test("Should login the user", async() => {
-  const res = await request(app).post("/game/login").send({
+test("Should login the user", async () => {
+  const res = await testSession.post("/game/login").send({
     username: "newUser",
     password: "0000"
   });
@@ -37,18 +33,30 @@ test("Should login the user", async() => {
   expect(res.body.success).toBe(true);
 });
 
-test("should logout the user", async() => {
-  const res = await request(app).post("/game/logout").send({
+test("Success to coinflip", async () => {
+  await testSession.post("/game/login").send({
+    username: "newUser",
+    password: "0000"
+  });
+
+  const res = await testSession.post("/game/coinflip").send({
+    choice: "Heads",
+    betAmount: 20
+  });
+  expect(res.status).toBe(200); 
+});
+
+test("should logout the user", async () => {
+  const res = await testSession.post("/game/logout").send({
     username: "newUser"
   });
   expect(res.status).toBe(201);
 });
 
-test("Fail to coinflip", async() =>{
-  const res = await request(app).post("/game/coinflip").send({
+test("Fail to coinflip", async () => {
+  const res = await testSession.post("/game/coinflip").send({
     choice: "Heads",
     betAmount: 20
-  })
-  expect(res.status).toBe(401);
-
-})
+  });
+  expect(res.status).toBe(401); 
+});
