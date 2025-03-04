@@ -8,6 +8,7 @@ import Header from "./components/header";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Footer from "./components/Footer";
+import Profile from "./pages/profile";
 
 import Index from "./pages/index";
 import CoinFlip from "./pages/coinflip";
@@ -29,7 +30,7 @@ function App() {
           <main className="col-md-9">
             {/* Main page */}
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/casino" element={<Index />} />
               <Route path="/CoinFlip" element={<CoinFlip />} />
               <Route path="/game" element={<Index />} />
