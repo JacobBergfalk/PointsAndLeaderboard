@@ -6,8 +6,11 @@ export const router = express.Router();
 const gameService = new GameService(100); //Hundra gratiscredits leovegas
 
 router.post("/coinflip", async (req: Request, res: Response) => {
-  const user = gameService.isLoggedIn;
-  if (!user) res.status(500).json({ success: false }); // error for not logged in
+  const user = await gameService.isLoggedIn(req);
+  if (!user) {
+      res.status(401).json({ error: "Not logged in" });// error for not logged in
+      return;
+    }
 
   const { choice, betAmount } = req.body;
 
@@ -49,7 +52,8 @@ router.post("/register", async (req: Request, res: Response) => {
 router.get("/session", async (req: Request, res: Response) => {
   const currentUser = gameService.isLoggedIn(req);
   if (await currentUser) {
-    res.json({ loggedIn: true });
+    res.json({ loggedIn: true});
+    res.status(201);
   } else {
     res.json({ loggedIn: false });
   }
