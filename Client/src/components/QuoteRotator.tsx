@@ -2,9 +2,10 @@ import { useState, useEffect, act } from "react";
 import "../assets/styles.css"; // Se till att CSS-filen innehåller fade-animationen
 
 const quotes = [
-  "99% of Gamblers Quit Before They Win Big - Erik Ersättning",
+  "99% of Gamblers Quit Before They Win Big - Erik Earner",
   "A Billion Zillion Gillion Dollars - Jacob Jackpot",
   "I Can Quit When I Want To - Hugo Hustle.",
+  "You only need to win big once - Jean Paul",
 ];
 
 function QuotesRotator() {

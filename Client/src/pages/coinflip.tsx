@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Registration from "./Registration";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import axios from "axios";

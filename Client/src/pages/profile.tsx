@@ -60,7 +60,6 @@ function Profile() {
       <p>Balance: {balance !== null ? `${balance} coins` : "Loading..."}</p>
 
       <button className="" onClick={invest}>
-        {" "}
         Invest
       </button>
     </div>
