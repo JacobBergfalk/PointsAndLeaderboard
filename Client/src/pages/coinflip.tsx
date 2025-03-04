@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Login from "./Login";
+import Registration from "./Registration";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import axios from "axios";
@@ -9,7 +9,6 @@ function coinflip() {
   const [imageSrc, setImageSrc] = useState("images/coin.png");
   const [balance, setBalance] = useState<number | null>(null);
   const [betAmount, setBetAmount] = useState(10); // Standardinsats
-
   const [error, setError] = useState<string | null>(null);
 
   const handleFlip = async () => {
@@ -49,15 +48,20 @@ function coinflip() {
   };
 
   useEffect(() => {
+    // need to get fixed to account for a user not logged in
     const getBalance = async () => {
       try {
         const response = await axios.get(
           "http://localhost:8080/game/balance/get"
         ); //Skickar get till localhosten
-        const balance = response.data.balance;
-        setBalance(balance);
+
+        if (response.data.success) {
+          const balance = response.data.balance;
+          setBalance(balance);
+        } else {
+        }
       } catch (err) {
-        setError("An error occurred while fetching data");
+        setError("An error occurred while fetching data ");
         console.error(error);
       }
     };
