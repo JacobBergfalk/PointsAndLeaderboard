@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import Login from "./Login";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import axios from "axios";
 axios.defaults.withCredentials = true;
 
 function coinflip() {
@@ -13,6 +14,17 @@ function coinflip() {
 
   const handleFlip = async () => {
     try {
+      const sessionResponse = await axios.get(
+        "http://localhost:8080/game/session"
+      );
+      const isLoggedIn = sessionResponse.data.loggedIn;
+
+      if (!isLoggedIn) {
+        setError("You must be logged in to play!");
+        alert("must be logged in");
+        return;
+      }
+
       const response = await axios.post("http://localhost:8080/game/coinflip", {
         choice: "Heads",
         betAmount: betAmount,
