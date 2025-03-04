@@ -16,25 +16,14 @@ export class GameService {
 
   async flipCoin(
     choice: "Heads" | "Tails",
-    betAmount: number
+    betAmount: number,
+    req: any
   ): Promise<CoinFlipGame> {
     const result = Math.random() < 0.5 ? "Heads" : "Tails";
     const win = choice === result;
-    this.winOrLoseCredits(win, betAmount);
-    this.displayResult(win);
+
+    updateBalance(req.session.username, win ? betAmount : -betAmount);
     return { betAmount, potentialCreditWonOrLost: betAmount, win, choice };
-  }
-
-  async displayResult(win: boolean) {
-    this.account.getCredits();
-  }
-
-  public winOrLoseCredits(win: boolean, credits: number): void {
-    if (win) {
-      this.account.addCredits(credits);
-    } else {
-      this.account.removeCredits(credits);
-    }
   }
 
   async loginUser(username: string, password: string, req: any) {
@@ -61,11 +50,12 @@ export class GameService {
     return req.session.username ?? undefined; // check if username ===  undefined
   }
 
+  // necessary??????
   async addCredits(req: any, amount: number): Promise<boolean> {
     if (!req.session.username) return false;
     return await updateBalance(req.session.username, amount);
   }
-
+  // necessary??????
   async removeCredits(req: any, amount: number): Promise<boolean> {
     if (!req.session.username) return false;
     return await updateBalance(req.session.username, -amount);

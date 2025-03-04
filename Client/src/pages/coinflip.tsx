@@ -39,7 +39,9 @@ function coinflip() {
   useEffect(() => {
     const getBalance = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/game/balance"); //Skickar get till localhosten
+        const response = await axios.get(
+          "http://localhost:8080/game/balance/get"
+        ); //Skickar get till localhosten
         const balance = response.data.balance;
         setBalance(balance);
       } catch (err) {

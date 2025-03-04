@@ -6,6 +6,9 @@ export const router = express.Router();
 const gameService = new GameService(100); //Hundra gratiscredits leovegas
 
 router.post("/coinflip", async (req: Request, res: Response) => {
+  const user = gameService.isLoggedIn;
+  if (!user) res.status(500).json({ success: false }); // error for not logged in
+
   const { choice, betAmount } = req.body;
 
   if (choice !== "Heads") {
@@ -13,8 +16,8 @@ router.post("/coinflip", async (req: Request, res: Response) => {
   }
 
   try {
-    const result = await gameService.flipCoin(choice, betAmount);
-    const balance = await gameService["account"].getCredits();
+    const result = await gameService.flipCoin(choice, betAmount, req);
+    const balance = await gameService.getCredits(req);
     res.json({ win: result.win, balance });
   } catch (error) {
     res.status(500).json({ success: false });
@@ -76,7 +79,7 @@ router.post("/logout", async (req: Request, res: Response) => {
 
 router.get("/balance/get", async (req: Request, res: Response) => {
   const balance = await gameService.getCredits(req);
-  if (balance !== null) {
+  if (balance !== undefined) {
     res.json({ success: true, balance });
   } else {
     res.status(401).json({ success: false, message: "User not logged in" });

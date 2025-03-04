@@ -44,26 +44,8 @@ export async function updateBalance(username: string, amount: number) {
 }
 
 export async function getCredits(username: string) {
-  return findUser(username)?.balance; // works?
-
-  /* 
-  const user = findUser(username);
-  return user ? user.balance : null;
-  */
+  return findUser(username)?.balance; // works!
 }
-
-/*
-const getCredits: any(User: username) = () => {
-  return this.balance;
-}
-
-export const addCredits: any(amount : number) : void => {
-}
-
-const removeCredits: any (amount : number): void {
-  this.balance +=amount;
-}
-*/
 
 export class Account {
   private credits: number;
