@@ -18,8 +18,7 @@ function LoginModal(param: modal) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  //const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(""); // New state for error message
+  const [errorMessage, setErrorMessage] = useState("");
 
   const switchModal = () => {
     param.onClose();
@@ -27,11 +26,15 @@ function LoginModal(param: modal) {
   };
 
   const handleLogin = async () => {
-    const success = await login(username, password);
-    if (success) {
-      param.onClose(); // Stäng modalen om inloggning lyckas
-    } else {
-      setErrorMessage("Fel användarnamn eller lösenord!");
+    try {
+      const success = await login(username, password);
+      if (success) {
+        param.onClose(); // Stäng modalen om inloggning lyckas
+      } else {
+        setErrorMessage("Fel användarnamn eller lösenord!");
+      }
+    } catch (err) {
+      console.error(errorMessage);
     }
   };
 
