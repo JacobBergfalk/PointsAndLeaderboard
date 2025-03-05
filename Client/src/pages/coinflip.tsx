@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./coinflip.css";
 
 import axios from "axios";
 import { useAuth } from "../assets/AuthContext";
@@ -70,7 +71,9 @@ function coinflip() {
     <div className="container">
       <img className="game-images" src={imageSrc} alt="coin" />
 
-      <p>Balance: {balance !== null ? `${balance} coins` : "Loading..."}</p>
+      <p className="bet-balance">
+        Balance: {balance !== null ? `${balance} coins` : "Loading..."}
+      </p>
       <div className="bet-container">
         <label>Bet Amount:</label>
         <input

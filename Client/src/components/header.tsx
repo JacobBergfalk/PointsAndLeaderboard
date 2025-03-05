@@ -3,7 +3,7 @@ import Registration from "../pages/Registration";
 import Login from "../pages/Login";
 
 import "../assets/styles.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../assets/AuthContext";
 
 import { Link } from "react-router-dom";
@@ -14,7 +14,7 @@ axios.defaults.withCredentials = true;
 function Header() {
   const [registrationOpen, setRegistrationOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
-  const { loggedIn, logout } = useAuth();
+  const { loggedIn } = useAuth();
 
   return (
     <header>

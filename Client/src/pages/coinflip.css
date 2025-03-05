@@ -1,0 +1,14 @@
+.container {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.game-images {
+  justify-self: center;
+}
+
+.bet-balance {
+  justify-self: center;
+}
