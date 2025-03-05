@@ -1,5 +1,6 @@
-import Balance from "../components/Balance";
 import TopLeaderboard from "../components/topLeaderboard";
+import SalesPitch from "../components/salespitch";
+
 import "./index.css";
 
 function index() {
@@ -17,7 +18,6 @@ function index() {
 
   return (
     <div className="container">
-      <Balance />
       <TopLeaderboard />
 
       <div className="game-gallery-container">
@@ -30,6 +30,10 @@ function index() {
             </a>
           ))}
         </div>
+      </div>
+
+      <div className="sales-pitch-container">
+        <SalesPitch></SalesPitch>
       </div>
     </div>
   );

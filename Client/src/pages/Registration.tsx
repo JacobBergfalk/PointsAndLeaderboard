@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./registrationLogin.css";
 import axios from "axios";
+import { useAuth } from "../assets/AuthContext";
 
 axios.defaults.withCredentials = true;
 
@@ -8,11 +9,12 @@ interface modal {
   isOpen: boolean;
   onClose: () => void;
   onOpenLogin: () => void;
-  onRegisterSuccess: () => void;
 }
 
 function notificationModal(param: modal) {
   if (!param.isOpen) return null;
+
+  const { login } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -25,12 +27,11 @@ function notificationModal(param: modal) {
     param.onOpenLogin();
   };
 
-  const registerUser = async () => {
+  const handleRegister = async () => {
     if (password !== rePassword) {
-      setErrorMessage("Passwords does not match");
+      setErrorMessage("Lösenorden matchar inte!");
       return;
     }
-
     setErrorMessage(""); // resets if passwords match
 
     try {
@@ -39,17 +40,16 @@ function notificationModal(param: modal) {
         password,
       });
 
-      const { success, message } = response.data;
-
-      if (success) {
-        param.onClose();
-        param.onRegisterSuccess();
+      const data = await response.data();
+      if (data.success) {
+        await login(username, password); // Logga in direkt efter registrering
+        param.onClose(); // Stäng modal vid lyckad registrering
       } else {
-        alert(message);
+        setErrorMessage(data.message || "Registrering misslyckades.");
       }
     } catch (error) {
-      console.error("error", error);
-      alert("There was an error when registrating");
+      console.error("Registreringsfel:", error);
+      setErrorMessage("Ett fel uppstod. Försök igen.");
     }
   };
 
@@ -113,7 +113,7 @@ function notificationModal(param: modal) {
         </div>
 
         <div>
-          <button className="register-btn" onClick={registerUser}>
+          <button className="register-btn" onClick={handleRegister}>
             Register
           </button>
           <p className="switch-modal-text" onClick={switchModal}>

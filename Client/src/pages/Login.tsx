@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./registrationLogin.css";
 import axios from "axios";
+import { useAuth } from "../assets/AuthContext";
 
 axios.defaults.withCredentials = true;
 
@@ -8,11 +9,12 @@ interface modal {
   isOpen: boolean;
   onClose: () => void;
   onOpenRegistration: () => void;
-  onLoginSuccess: () => void;
 }
 
-function notificationModal(param: modal) {
+function LoginModal(param: modal) {
   if (!param.isOpen) return null;
+
+  const { login } = useAuth(); // Hämta login-funktionen
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -24,24 +26,12 @@ function notificationModal(param: modal) {
     param.onOpenRegistration();
   };
 
-  const loginUser = async () => {
-    try {
-      const response = await axios.post("http://localhost:8080/game/login", {
-        username,
-        password,
-      });
-
-      const { success, message } = response.data;
-
-      if (success) {
-        param.onClose();
-        param.onLoginSuccess();
-      } else {
-        alert(message);
-      }
-    } catch (error) {
-      console.error("error", error);
-      alert("There was an error when registrating");
+  const handleLogin = async () => {
+    const success = await login(username, password);
+    if (success) {
+      param.onClose(); // Stäng modalen om inloggning lyckas
+    } else {
+      setErrorMessage("Fel användarnamn eller lösenord!");
     }
   };
 
@@ -81,7 +71,7 @@ function notificationModal(param: modal) {
         </div>
 
         <div>
-          <button className="login-btn" onClick={loginUser}>
+          <button className="login-btn" onClick={handleLogin}>
             Login
           </button>
           <p className="switch-modal-text" onClick={switchModal}>
@@ -93,4 +83,4 @@ function notificationModal(param: modal) {
   );
 }
 
-export default notificationModal;
+export default LoginModal;

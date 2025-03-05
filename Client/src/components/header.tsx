@@ -4,51 +4,34 @@ import Login from "../pages/Login";
 
 import "../assets/styles.css";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { useAuth } from "../assets/AuthContext";
 
+import { Link } from "react-router-dom";
+
+import axios from "axios";
 axios.defaults.withCredentials = true;
 
 function Header() {
   const [registrationOpen, setRegistrationOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    // Check session status on load
-    const checkLoginStatus = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/game/session");
-        setLoggedIn(response.data.loggedIn);
-      } catch (error) {
-        console.error("Error checking session:", error);
-      }
-    };
-
-    checkLoginStatus();
-  }, []);
-
-  const handleLogout = async () => {
-    try {
-      await axios.post("http://localhost:8080/game/logout");
-      setLoggedIn(false);
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
+  const { loggedIn, logout } = useAuth();
 
   return (
     <header>
-      <img className="header-images" src="images/logo-temp.png" alt="logo" />
+      <Link to={"/index"}>
+        <img className="header-images" src="images/logo-temp.png" alt="logo" />
+      </Link>
+
       <div className="quote-content">
         <QuotesRotator />
       </div>
       <div className="user-buttons">
-        {loggedIn ? (
-          <button className="logout-button" onClick={handleLogout}>
-            Log Out
-          </button>
+        {loggedIn ? ( // Logged in
+          <Link to={"/profile"}>
+            <button className="profile-button">Profile</button>
+          </Link>
         ) : (
-          // Logged in or not
+          // Not Logged in
           <>
             <button className="login-button" onClick={() => setLoginOpen(true)}>
               Log In
@@ -57,7 +40,7 @@ function Header() {
               isOpen={loginOpen}
               onClose={() => setLoginOpen(false)}
               onOpenRegistration={() => setRegistrationOpen(true)}
-              onLoginSuccess={() => setLoggedIn(true)} // Pass callback
+              //onLoginSuccess={() => setLoggedIn(true)} // Pass callback
             />
             <button
               className="registration-button"
@@ -69,7 +52,7 @@ function Header() {
               isOpen={registrationOpen}
               onClose={() => setRegistrationOpen(false)}
               onOpenLogin={() => setLoginOpen(true)}
-              onRegisterSuccess={() => setLoggedIn(true)}
+              //onRegisterSuccess={() => setLoggedIn(true)}
             />
           </>
         )}

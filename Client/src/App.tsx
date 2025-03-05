@@ -8,41 +8,45 @@ import Header from "./components/header";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Footer from "./components/Footer";
-import Profile from "./pages/profile";
 
+import Profile from "./pages/profile";
 import Index from "./pages/index";
 import CoinFlip from "./pages/coinflip";
 
+import { AuthProvider } from "./assets/AuthContext"; // Import the provider
+
 function App() {
   return (
-    <Router>
-      <div className="container-fluid">
-        <div className="row">
-          <Header />
-        </div>
-
-        <div className="row">
-          <Navbar />
-        </div>
-
-        <div className="row">
-          <div className="col-md-1"></div>
-          <main className="col-md-9">
-            {/* Main page */}
-            <Routes>
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/casino" element={<Index />} />
-              <Route path="/CoinFlip" element={<CoinFlip />} />
-              <Route path="/game" element={<Index />} />
-            </Routes>
-          </main>
-          <div className="col-md-2">
-            <Sidebar />
+    <AuthProvider>
+      <Router>
+        <div className="container-fluid">
+          <div className="row">
+            <Header />
           </div>
+
+          <div className="row">
+            <Navbar />
+          </div>
+
+          <div className="row">
+            <div className="col-md-1"></div>
+            <main className="col-md-9">
+              {/* Main page */}
+              <Routes>
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/Index" element={<Index />} />
+                <Route path="/CoinFlip" element={<CoinFlip />} />
+                <Route path="/game" element={<Index />} />
+              </Routes>
+            </main>
+            <div className="col-md-2">
+              <Sidebar />
+            </div>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 }
 

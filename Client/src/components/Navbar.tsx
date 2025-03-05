@@ -8,10 +8,7 @@ function Navbar() {
       <nav>
         <ul>
           <li className="navbar_links">
-            <Link to="/profile">Profile</Link>
-          </li>
-          <li className="navbar_links">
-            <Link to="/casino">Casino Slots</Link>
+            <Link to="/index">Home</Link>
           </li>
           <li className="navbar_links">
             <Link to="/coinflip">Coin Flip</Link>

@@ -81,6 +81,8 @@ router.post("/logout", async (req: Request, res: Response) => {
   res.status(201).json({ success: true, message: "Logout successful" });
 });
 
+// /BALANCE
+
 router.get("/balance/get", async (req: Request, res: Response) => {
   const balance = await gameService.getCredits(req);
 

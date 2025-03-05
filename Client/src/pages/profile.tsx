@@ -1,26 +1,19 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useAuth } from "../assets/AuthContext";
 
 axios.defaults.withCredentials = true;
 
 function Profile() {
-  const [username, setUsername] = useState<string | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
+  const { loggedIn, logout, username } = useAuth();
 
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserBalance = async () => {
       try {
-        // session user
-        const sessionResponse = await axios.get(
-          "http://localhost:8080/game/session"
-        );
-
-        if (sessionResponse.data.loggedIn) {
-          setUsername(sessionResponse.data.username);
-        }
-
+        if (!loggedIn) return;
         // user balance
         const balanceResponse = await axios.get(
           "http://localhost:8080/game/balance/get"
@@ -31,8 +24,8 @@ function Profile() {
       }
     };
 
-    fetchUserData();
-  });
+    fetchUserBalance();
+  }, [loggedIn]);
 
   const invest = async () => {
     try {
@@ -54,14 +47,28 @@ function Profile() {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await axios.post("http://localhost:8080/game/logout");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <div className="container">
-      {username ? <h3>Welcome, {username}!</h3> : <p>Loading...</p>}
+      {loggedIn ? <h3>Welcome, {username}!</h3> : <p>Loading...</p>}
       <p>Balance: {balance !== null ? `${balance} coins` : "Loading..."}</p>
 
       <button className="" onClick={invest}>
         Invest
       </button>
+
+      <button className="logout-button" onClick={logout}>
+        Log Out
+      </button>
+
+      <p className="">Delete account</p>
     </div>
   );
 }

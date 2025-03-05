@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import axios from "axios";
+import { useAuth } from "../assets/AuthContext";
 axios.defaults.withCredentials = true;
 
 function coinflip() {
+  const { loggedIn } = useAuth();
+
   const [imageSrc, setImageSrc] = useState("images/coin.png");
   const [balance, setBalance] = useState<number | null>(null);
   const [betAmount, setBetAmount] = useState(10); // Standardinsats
@@ -12,14 +15,9 @@ function coinflip() {
 
   const handleFlip = async () => {
     try {
-      const sessionResponse = await axios.get(
-        "http://localhost:8080/game/session"
-      );
-      const isLoggedIn = sessionResponse.data.loggedIn;
-
-      if (!isLoggedIn) {
+      if (!loggedIn) {
         setError("You must be logged in to play!");
-        alert("must be logged in");
+        alert("Must be logged in");
         return;
       }
 
