@@ -60,14 +60,11 @@ function LoginModal(param: modal) {
           <label htmlFor="Password">Password</label>
           <input
             id="password"
-            type={showPassword ? "text" : "password"}
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="password"
           />
-          <button type="button" onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? "Hide" : "Show"}
-          </button>
         </div>
 
         <div>

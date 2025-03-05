@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../assets/AuthContext";
+import { Link } from "react-router-dom";
+import "../assets/styles.css";
 
 axios.defaults.withCredentials = true;
 
@@ -47,26 +49,21 @@ function Profile() {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await axios.post("http://localhost:8080/game/logout");
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
-
   return (
     <div className="container">
       {loggedIn ? <h3>Welcome, {username}!</h3> : <p>Loading...</p>}
+      <p>Username: {username !== null ? `${username}` : "Loading..."}</p>
       <p>Balance: {balance !== null ? `${balance} coins` : "Loading..."}</p>
-
-      <button className="" onClick={invest}>
-        Invest
-      </button>
-
-      <button className="logout-button" onClick={logout}>
-        Log Out
-      </button>
+      <div className="profile-buttons">
+        <button className="invest-button" onClick={invest}>
+          Invest
+        </button>
+        <Link to="/index">
+          <button className="logout-button" onClick={logout}>
+            Log Out
+          </button>
+        </Link>
+      </div>
 
       <p className="">Delete account</p>
     </div>

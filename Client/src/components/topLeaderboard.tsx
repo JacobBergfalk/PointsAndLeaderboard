@@ -1,7 +1,7 @@
-import React from "react";
-import "./topLeaderboard.css"; // Add styles if needed
+import "../pages/index.css";
 
 function topLeaderboard() {
+  //const { loggedIn, username } = useAuth();   // Növändigt för att bli korrigerade för listan
   const players = [
     // will be responsive in future
     { username: "HugoHustle", balance: 1200 },
@@ -18,6 +18,7 @@ function topLeaderboard() {
     <div className="leaderboard-container">
       <h2>🏆 Top 5 Gamers 🏆</h2>
       <ul className="leaderboard">
+        {/*loggedIn && username && players.push({ username, balance }) FRAMTIDA, POTENTIELLT FUNGERAR*/}
         {sortedPlayers.map((player, index) => (
           <li key={index} className="leaderboard-item">
             <span className="rank">#{index + 1}</span>
