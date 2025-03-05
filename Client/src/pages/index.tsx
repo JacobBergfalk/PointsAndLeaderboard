@@ -1,5 +1,5 @@
 import TopLeaderboard from "../components/topLeaderboard";
-import SalesPitch from "../components/salespitch";
+import SalesPitch from "../components/SalesPitch";
 
 import "./index.css";
 
