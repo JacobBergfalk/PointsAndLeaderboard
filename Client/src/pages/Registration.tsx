@@ -14,7 +14,7 @@ interface modal {
 function notificationModal(param: modal) {
   if (!param.isOpen) return null;
 
-  const { login } = useAuth();
+  const { register } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -32,24 +32,14 @@ function notificationModal(param: modal) {
       setErrorMessage("Lösenorden matchar inte!");
       return;
     }
-    setErrorMessage(""); // resets if passwords match
 
-    try {
-      const response = await axios.post("http://localhost:8080/game/register", {
-        username,
-        password,
-      });
+    setErrorMessage(""); // Reset error message
 
-      const data = await response.data();
-      if (data.success) {
-        await login(username, password); // Logga in direkt efter registrering
-        param.onClose(); // Stäng modal vid lyckad registrering
-      } else {
-        setErrorMessage(data.message || "Registrering misslyckades.");
-      }
-    } catch (error) {
-      console.error("Registreringsfel:", error);
-      setErrorMessage("Ett fel uppstod. Försök igen.");
+    const success = await register(username, password);
+    if (success) {
+      param.onClose(); // Stäng modalen om registreringen lyckades
+    } else {
+      setErrorMessage("Registrering misslyckades.");
     }
   };
 
