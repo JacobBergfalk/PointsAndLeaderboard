@@ -27,7 +27,7 @@ function index() {
     <div className="container">
       <div className="top-container">
         <div className="latest-games">
-          <h2>🎮 Senaste spel</h2>
+          <h2>🔥 Hetaste spelen</h2>
           <div className="game-grid">
             {latestGames.map((game, index) => (
               <a key={index} className="game-card" href="https://stodlinjen.se">
@@ -37,7 +37,7 @@ function index() {
             ))}
           </div>
         </div>
-        <div className="leaderboard-content">
+        <div className="leaderboard-wrapper">
           <TopLeaderboard />
         </div>
       </div>

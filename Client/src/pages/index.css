@@ -1,14 +1,17 @@
 .top-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-self: center;
+
   width: 90%;
   gap: 20px;
+  padding-bottom: 20px;
 }
 
 .latest-games {
   flex: 1;
-  min-width: 300px;
+  min-width: 400px;
+  max-width: 500px;
   background: #f8f8f8;
   padding: 20px;
   border-radius: 10px;
@@ -75,6 +78,11 @@
 }
 
 /* Leaderboard */
+
+.leaderboard-wrapper {
+  padding: 20px;
+  justify-content: center;
+}
 .leaderboard-container {
   text-align: center;
   margin-top: 20px;
@@ -94,6 +102,7 @@
   width: 300px;
   border-radius: 5px;
   font-weight: bold;
+  border-radius: 10px;
 }
 
 .rank {
