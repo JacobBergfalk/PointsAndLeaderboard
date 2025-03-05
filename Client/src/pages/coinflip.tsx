@@ -40,7 +40,7 @@ function coinflip() {
         setImageSrc("images/coin.png"); // Återställ efter 0.5 sek
       }, 500);
     } catch (err) {
-      setError("An error occurred while fetching data");
+      setError("An error occurred while fetching data apa");
       console.error(error);
     }
   };
@@ -59,7 +59,7 @@ function coinflip() {
         } else {
         }
       } catch (err) {
-        setError("An error occurred while fetching data ");
+        setError("An error occurred while fetching data bitch");
         console.error(error);
       }
     };

@@ -18,7 +18,7 @@ function LoginModal(param: modal) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  //const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState(""); // New state for error message
 
   const switchModal = () => {
