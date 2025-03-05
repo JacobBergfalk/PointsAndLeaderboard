@@ -10,10 +10,19 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { AuthProvider } from "../assets/AuthContext";
 
+jest.mock("../assets/AuthContext", () => ({
+  ...jest.requireActual("../assets/AuthContext"),
+  useAuth: () => ({
+    loggedIn: true, // Mocka att användaren alltid är inloggad
+  }),
+}));
+
 const mockAxios = new MockAdapter(axios);
 
 beforeEach(() => {
-  mockAxios.onGet("http://localhost:8080/game/session").reply(200, { loggedIn: true });
+  mockAxios
+    .onGet("http://localhost:8080/game/session")
+    .reply(200, { loggedIn: true });
 });
 
 afterEach(() => {
@@ -34,8 +43,8 @@ test("should render CoinFlip component", () => {
 
 test("should fetch and display balance on mount", async () => {
   mockAxios
-    .onGet("http://localhost:8080/game/balance")
-    .reply(200, { balance: 100 });
+    .onGet("http://localhost:8080/game/balance/get")
+    .reply(200, { success: true, balance: 100 });
 
   await act(async () => {
     renderWithAuth(<CoinFlip />);
@@ -51,7 +60,7 @@ test("should update image on win", async () => {
     .onPost("http://localhost:8080/game/coinflip")
     .reply(200, { win: true, balance: 110 });
 
-    renderWithAuth(<CoinFlip />);
+  renderWithAuth(<CoinFlip />);
   fireEvent.click(screen.getByText(/Vinn pengar knappen/i));
 
   await waitFor(() =>
@@ -68,7 +77,7 @@ test("should update image on loss", async () => {
     .onPost("http://localhost:8080/game/coinflip")
     .reply(200, { win: false, balance: 90 });
 
-    renderWithAuth(<CoinFlip />);
+  renderWithAuth(<CoinFlip />);
   fireEvent.click(screen.getByText(/Vinn pengar knappen/i));
 
   await waitFor(() =>
