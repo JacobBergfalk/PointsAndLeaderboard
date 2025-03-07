@@ -1,15 +1,48 @@
+import { useEffect, useState } from "react";
 import "../pages/index.css";
+import axios from "axios";
+import { useAuth } from "../assets/AuthContext";
 
 function topLeaderboard() {
-  //const { loggedIn, username } = useAuth();   // Növändigt för att bli korrigerade för listan
-  const players = [
+  const { username, loggedIn } = useAuth();
+  const [balance, setBalance] = useState<number>();
+
+  const [players, setPlayers] = useState([
     // will be responsive in future
     { username: "HugoHustle", balance: 1200 },
     { username: "Tobbe Token", balance: 950 },
     { username: "the house", balance: 5000 },
     { username: "Jacob Jackpot", balance: 720 },
     { username: "Erik Ersättning", balance: 650 },
-  ];
+  ]);
+
+  useEffect(() => {
+    const getBalance = async () => {
+      if (!loggedIn) return;
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/game/balance/get"
+        );
+
+        if (username && response.data.balance != undefined) {
+          setBalance(response.data.balance);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getBalance();
+  }, [loggedIn]);
+
+  useEffect(() => {
+    if (balance !== undefined && username) {
+      setPlayers((prevPlayers) => [
+        ...prevPlayers,
+        { username, balance: balance },
+      ]);
+    }
+  }, [balance]);
 
   // Sort players in descending order (highest balance first)
   const sortedPlayers = [...players].sort((a, b) => b.balance - a.balance);
@@ -18,7 +51,6 @@ function topLeaderboard() {
     <div className="leaderboard-container">
       <h2>🏆 Top 5 Gamers 🏆</h2>
       <ul className="leaderboard">
-        {/*loggedIn && username && players.push({ username, balance }) FRAMTIDA, POTENTIELLT FUNGERAR*/}
         {sortedPlayers.map((player, index) => (
           <li key={index} className="leaderboard-item">
             <span className="rank">#{index + 1}</span>
