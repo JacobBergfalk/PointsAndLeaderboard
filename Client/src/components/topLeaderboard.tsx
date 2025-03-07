@@ -11,7 +11,6 @@ function topLeaderboard() {
     // will be responsive in future
     { username: "HugoHustle", balance: 1200 },
     { username: "Tobbe Token", balance: 950 },
-    { username: "the house", balance: 5000 },
     { username: "Jacob Jackpot", balance: 720 },
     { username: "Erik Ersättning", balance: 650 },
   ]);
@@ -37,15 +36,20 @@ function topLeaderboard() {
 
   useEffect(() => {
     if (balance !== undefined && username) {
+      const houseBalance = Math.max(2000, balance + 100);
+
       setPlayers((prevPlayers) => [
         ...prevPlayers,
         { username, balance: balance },
+        { username: "the house", balance: houseBalance },
       ]);
     }
   }, [balance]);
 
   // Sort players in descending order (highest balance first)
-  const sortedPlayers = [...players].sort((a, b) => b.balance - a.balance);
+  const sortedPlayers = [...players]
+    .sort((a, b) => b.balance - a.balance)
+    .slice(0, 5); // slice to only top 5
 
   return (
     <div className="leaderboard-container">
