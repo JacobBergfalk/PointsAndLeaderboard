@@ -6,8 +6,9 @@ import {
   updateBalance,
   getCredits,
 } from "../model/account";
+import { IGameService } from "./IGameService";
 
-export class GameService {
+export class GameService implements IGameService {
   private account: Account;
 
   constructor(initialcredits: number) {

@@ -1,9 +1,10 @@
 import express, { Request, Response } from "express";
 import { GameService } from "../service/gameService";
 import { authenticateUser } from "../model/account";
+import { IGameService } from "../service/IGameService";
 
 export const router = express.Router();
-const gameService = new GameService(100); //Hundra gratiscredits leovegas
+const gameService: IGameService = new GameService(100)
 
 router.post("/coinflip", async (req: Request, res: Response) => {
   const user = await gameService.isLoggedIn(req);
@@ -28,7 +29,7 @@ router.post("/coinflip", async (req: Request, res: Response) => {
 });
 
 router.get("/balance", async (req: Request, res: Response) => {
-  res.json({ balance: gameService["account"].getCredits() });
+  res.json({ balance: gameService["account"].getCredits() }); //Fattar inte riktigt hur jag löser denna just nu
 });
 
 // REGISTER LOGIN AND LOGOUT
