@@ -5,22 +5,22 @@ import "./index.css";
 
 function index() {
   const games = [
-    { title: "Sonic Frenzy", img: "images/coin.png" },
-    { title: "Traffic Tom", img: "images/coin.png" },
-    { title: "Capybara Clicker 2", img: "images/coin.png" },
-    { title: "Blazing Knight", img: "images/coin.png" },
-    { title: "Capybara Clicker", img: "images/coin.png" },
-    { title: "Ragdoll Archers", img: "images/coin.png" },
-    { title: "Draw Crash Race", img: "images/coin.png" },
-    { title: "Helix Jump 2", img: "images/coin.png" },
-    { title: "Hole.io", img: "images/coin.png" },
+    { title: "Sonic Frenzy", img: "images/sonic.png" },
+    { title: "Traffic Tom", img: "images/traffictom.png" },
+    { title: "Capybara Clicker 2", img: "images/capybara2.png" },
+    { title: "Blazing Knight", img: "images/knight.png" },
+    { title: "Capybara Clicker", img: "images/capybara.png" },
+    { title: "Ragdoll Archers", img: "images/archer.png" },
+    { title: "Draw Crash Race", img: "images/crash.png" },
+    { title: "Helix Jump 2", img: "images/helix.png" },
+    { title: "Hole.io", img: "images/hole.png" },
   ];
 
   const latestGames = [
-    { title: "Sonic Frenzy", img: "images/coin.png" },
-    { title: "Traffic Tom", img: "images/coin.png" },
-    { title: "Capybara Clicker 2", img: "images/coin.png" },
-    { title: "Blazing Knight", img: "images/coin.png" },
+    { title: "Sonic Frenzy", img: "images/sonic.png" },
+    { title: "Traffic Tom", img: "images/traffictom.png" },
+    { title: "Capybara Clicker 2", img: "images/capybara2.png" },
+    { title: "Blazing Knight", img: "images/knight.png" },
   ];
 
   return (
