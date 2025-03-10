@@ -43,7 +43,7 @@ export class GameService implements IGameService {
     return false;
   }
 
-  async logoutUser(username: string, req: any) {
+  async logoutUser(req: any) {
     delete req.session.username;
   }
 

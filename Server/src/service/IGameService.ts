@@ -15,7 +15,7 @@ export interface IGameService {
 
   getCredits(req: any): Promise<Number | undefined>;
 
-  logoutUser(username: string, req: any): Promise<void>; //Denna kanske borde returnera något egentligen så vi vet om den är utloggad eller inte
+  logoutUser(req: any): Promise<void>; //Denna kanske borde returnera något egentligen så vi vet om den är utloggad eller inte
 
   addCredits(req: any, amount: number): Promise<Boolean>;
 

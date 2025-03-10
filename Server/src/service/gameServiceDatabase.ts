@@ -10,7 +10,7 @@ export class gameServiceDatabase implements IGameService {
     betAmount: number,
     req: any
   ): Promise<CoinFlipGame | null> {
-    if (!req.session.username) return null;
+    if (req.session.username === undefined) return null;
 
     const user = await userModel.findOne({
       where: { username: req.session.username },
@@ -55,11 +55,18 @@ export class gameServiceDatabase implements IGameService {
       password: hashedPassword,
       balance: 100,
     }); // Default balance
+
     req.session.username = username;
+
     return true;
   }
 
-  async logoutUser(req: any): Promise<void> {
+  async logoutUser(req: any) {
+    if (req === undefined) {
+      console.error("Logout : session is undefined");
+      return;
+    }
+
     delete req.session.username;
   }
 
