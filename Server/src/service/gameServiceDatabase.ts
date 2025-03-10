@@ -1,29 +1,97 @@
 import { CoinFlipGame } from "../model/games";
-import {
-  addUser,
-} from "../model/accountDatabase";
+import { addUser } from "../model/accountDatabase";
 import { IGameService } from "./IGameService";
 import { userModel } from "../../db/user.db";
-
+import bcrypt from "bcrypt";
 
 export class gameServiceDatabase implements IGameService {
-    
-    private account: Account;
+  async flipCoin(
+    choice: "Heads" | "Tails",
+    betAmount: number,
+    req: any
+  ): Promise<CoinFlipGame | null> {
+    if (!req.session.username) return null;
 
-    constructor(initialcredits: number) {
-      this.account = new Account(initialcredits);
+    const user = await userModel.findOne({
+      where: { username: req.session.username },
+    });
+    if (!user || user.balance < betAmount) return null;
+
+    const result = Math.random() < 0.5 ? "Heads" : "Tails";
+    const win = choice === result;
+    const newBalance = win
+      ? user.balance + betAmount
+      : user.balance - betAmount;
+
+    await user.update({ balance: newBalance });
+
+    return { betAmount, potentialCreditWonOrLost: betAmount, win, choice };
+  }
+
+  async loginUser(
+    username: string,
+    password: string,
+    req: any
+  ): Promise<boolean> {
+    const user = await userModel.findOne({ where: { username } });
+    if (user && (await bcrypt.compare(password, user.password))) {
+      req.session.username = username;
+      return true;
     }
+    return false;
+  }
 
-    async registerUser(username: string, password: string, req: any) {
-        const success = await addUser(username, password);
-        if (success) {
-          return { message: "User registered successfully" };
-        } else {
-          throw new Error("Username already exists");
-        }
-      }
+  async registerUser(
+    username: string,
+    password: string,
+    req: any
+  ): Promise<boolean> {
+    const existingUser = await userModel.findOne({ where: { username } });
+    if (existingUser) return false;
 
-    async flipCoin
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await userModel.create({
+      username,
+      password: hashedPassword,
+      balance: 100,
+    }); // Default balance
+    req.session.username = username;
+    return true;
+  }
 
-    
+  async logoutUser(req: any): Promise<void> {
+    delete req.session.username;
+  }
+
+  async isLoggedIn(req: any): Promise<boolean> {
+    return req.session.username !== undefined;
+  }
+
+  async getCredits(req: any): Promise<number | undefined> {
+    if (!req.session.username) return undefined;
+    const user = await userModel.findOne({
+      where: { username: req.session.username },
+    });
+    return user?.balance;
+  }
+
+  async addCredits(req: any, amount: number): Promise<boolean> {
+    if (!req.session.username) return false;
+    const user = await userModel.findOne({
+      where: { username: req.session.username },
+    });
+    if (!user) return false;
+    await user.update({ balance: user.balance + amount });
+    return true;
+  }
+
+  async removeCredits(req: any, amount: number): Promise<boolean> {
+    if (!req.session.username) return false;
+    const user = await userModel.findOne({
+      where: { username: req.session.username },
+    });
+    if (!user || user.balance < amount) return false;
+    await user.update({ balance: user.balance - amount });
+    return true;
+  }
 }

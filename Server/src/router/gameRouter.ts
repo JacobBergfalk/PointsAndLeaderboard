@@ -4,7 +4,7 @@ import { authenticateUser } from "../model/account";
 import { IGameService } from "../service/IGameService";
 
 export const router = express.Router();
-const gameService: IGameService = new GameService(100)
+const gameService: IGameService = new GameService(100);
 
 router.post("/coinflip", async (req: Request, res: Response) => {
   const user = await gameService.isLoggedIn(req);
@@ -22,14 +22,15 @@ router.post("/coinflip", async (req: Request, res: Response) => {
   try {
     const result = await gameService.flipCoin(choice, betAmount, req);
     const balance = await gameService.getCredits(req);
+    if (result === null) {
+      res.status(500).json({ success: false });
+      return;
+    }
+
     res.json({ win: result.win, balance });
   } catch (error) {
     res.status(500).json({ success: false });
   }
-});
-
-router.get("/balance", async (req: Request, res: Response) => {
-  res.json({ balance: gameService["account"].getCredits() }); //Fattar inte riktigt hur jag löser denna just nu
 });
 
 // REGISTER LOGIN AND LOGOUT
