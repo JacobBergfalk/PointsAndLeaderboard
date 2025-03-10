@@ -27,6 +27,7 @@
 
 .input-container {
   text-align: left;
+  padding: 15px 0px;
 }
 
 .input-container label {
@@ -64,10 +65,10 @@
   margin-top: 10px;
   border-radius: 7px;
   font-size: 18px;
-  width: 70%;
+  width: 60%;
   height: 40px;
-  justify-items: center;
   border: none;
+  justify-content: center;
 }
 
 p {

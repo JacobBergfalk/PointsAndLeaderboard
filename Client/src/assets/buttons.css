@@ -1,0 +1,39 @@
+button {
+  align-items: center;
+  border-radius: 10px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 600;
+  max-width: 480px;
+  min-height: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  transition: 0.2s;
+  margin: 5px;
+  border: none;
+  border: 0;
+  background-color: #0a66c2;
+  justify-content: center;
+}
+
+.profile-buttons button {
+  display: grid;
+}
+
+button:hover {
+  background-color: #0c3870;
+  color: #ffffff;
+}
+
+button:active {
+  background-color: #092952;
+}
+
+.login-button {
+  background-color: #ffffff;
+  color: #0c3870;
+  border: 2px solid #303ebc;
+}

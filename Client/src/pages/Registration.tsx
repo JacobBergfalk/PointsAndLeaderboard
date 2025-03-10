@@ -20,7 +20,8 @@ function notificationModal(param: modal) {
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [gambleTime, setGambleTime] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(""); // New state for error message
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
 
   const switchModal = () => {
     param.onClose();
@@ -28,12 +29,31 @@ function notificationModal(param: modal) {
   };
 
   const handleRegister = async () => {
-    if (password !== rePassword) {
-      setErrorMessage("Lösenorden matchar inte!");
+    setErrorMessage(""); // reset when clicking button
+    setErrorPassword("");
+
+    if (!gambleTime) {
+      setErrorMessage("Gamble time!");
       return;
     }
 
-    setErrorMessage(""); // Reset error message
+    if (!username) {
+      setErrorMessage("Username is required");
+      return;
+    }
+
+    if (!password || !rePassword) {
+      setErrorPassword("Password is required!");
+      return;
+    }
+
+    if (password !== rePassword) {
+      setErrorPassword("Passwords does not match!");
+      return;
+    }
+
+    setErrorMessage("");
+    setErrorPassword("");
 
     const success = await register(username, password);
     if (success) {
@@ -52,41 +72,45 @@ function notificationModal(param: modal) {
         </button>
 
         <h2>Create User</h2>
+
+        {errorMessage && (
+          <p style={{ color: "red", fontSize: "12px" }}>{errorMessage}</p>
+        )}
+        {errorPassword && (
+          <p style={{ color: "red", fontSize: "12px" }}>{errorPassword}</p>
+        )}
+
         <div className="input-container">
-          <label htmlFor="Username">Username</label>
           <input
             id="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="username"
+            style={{ borderColor: errorMessage && !username ? "red" : "" }}
           />
         </div>
 
         <div className="input-container">
-          <label htmlFor="Password">Password</label>
           <input
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="password"
+            style={{ borderColor: errorPassword && !password ? "red" : "" }}
           />
         </div>
 
         <div className="input-container">
-          <label htmlFor="Password">Re-Type Password</label>
           <input
             id="password"
             type="password"
             value={rePassword}
             onChange={(e) => setRePassword(e.target.value)}
             placeholder="Re-Type Password"
-            style={{ borderColor: errorMessage ? "red" : "" }}
+            style={{ borderColor: errorPassword ? "red" : "" }}
           />
-          {errorMessage && (
-            <p style={{ color: "red", fontSize: "12px" }}>{errorMessage}</p>
-          )}
         </div>
 
         {/* CHECK IF PASSWORDS MATCH OR NOT*/}

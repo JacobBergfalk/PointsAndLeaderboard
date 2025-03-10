@@ -3,6 +3,7 @@ import Registration from "../pages/Registration";
 import Login from "../pages/Login";
 
 import "../assets/styles.css";
+import "../assets/buttons.css";
 import { useState } from "react";
 import { useAuth } from "../assets/AuthContext";
 

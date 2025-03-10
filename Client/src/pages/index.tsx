@@ -2,6 +2,7 @@ import TopLeaderboard from "../components/topLeaderboard";
 import SalesPitch from "../components/SalesPitch";
 
 import "./index.css";
+import "../assets/buttons.css";
 
 function index() {
   const games = [

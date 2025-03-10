@@ -34,6 +34,5 @@ userModel.init(
   {
     //WTF?
     sequelize,
-    //tableName: "users",
   }
 );

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./coinflip.css";
+import "../assets/styles.css";
+import "../assets/buttons.css";
 
 import axios from "axios";
 import { useAuth } from "../assets/AuthContext";
@@ -82,7 +83,7 @@ function coinflip() {
           onChange={(e) => setBetAmount(Number(e.target.value))}
         />
       </div>
-      <button className="btn btn-primary mt-3" onClick={handleFlip}>
+      <button className="" onClick={handleFlip}>
         Vinn pengar knappen
       </button>
       {error && <p style={{ color: "red", fontSize: "12px" }}>{error}</p>}

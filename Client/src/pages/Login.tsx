@@ -48,19 +48,21 @@ function LoginModal(param: modal) {
 
         <h2>Login</h2>
 
+        {errorMessage && (
+          <p style={{ color: "red", fontSize: "12px" }}>{errorMessage}</p>
+        )}
+
         <div className="input-container">
-          <label htmlFor="Username">Username</label>
           <input
             id="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="username"
+            placeholder="Username"
           />
         </div>
 
         <div className="input-container">
-          <label htmlFor="Password">Password</label>
           <input
             id="password"
             type="password"
