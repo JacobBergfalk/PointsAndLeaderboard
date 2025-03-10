@@ -2,9 +2,10 @@ import express, { Request, Response } from "express";
 import { GameService } from "../service/gameService";
 import { authenticateUser } from "../model/account";
 import { IGameService } from "../service/IGameService";
+import { gameServiceDatabase } from "../service/gameServiceDatabase";
 
 export const router = express.Router();
-const gameService: IGameService = new GameService(100);
+const gameService: IGameService = new gameServiceDatabase();
 
 router.post("/coinflip", async (req: Request, res: Response) => {
   const user = await gameService.isLoggedIn(req);

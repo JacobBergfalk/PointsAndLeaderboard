@@ -5,7 +5,7 @@ export async function addUser(
   username: string,
   password: string
 ): Promise<boolean> {
-  const existingUser = await userModel.findOne({ username });
+  const existingUser = await userModel.findOne({ where: { username } });
   if (existingUser) return false; // Returnera false om användaren redan finns
 
   const salt = await bcrypt.genSalt(10);
