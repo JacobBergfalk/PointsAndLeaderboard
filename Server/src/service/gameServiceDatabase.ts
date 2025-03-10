@@ -82,6 +82,16 @@ export class gameServiceDatabase implements IGameService {
     return user?.balance;
   }
 
+  async getUsers(req: any): Promise<any[]> {
+    try{
+    const users = await userModel.findAll();
+    return users;
+    } catch(error) {
+      console.error("Error", error);
+      throw new Error("Could not fetch data")
+    }
+  }
+
   async addCredits(req: any, amount: number): Promise<boolean> {
     if (!req.session.username) return false;
     const user = await userModel.findOne({
