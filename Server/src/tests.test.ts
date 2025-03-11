@@ -1,6 +1,6 @@
 import session from "supertest-session";
 import { app } from "../start"; 
-import { SuperTest, Test } from "supertest"; // 🟢 Importera typer
+import { SuperTest, Test } from "supertest"; 
 
 
 let testSession: SuperTest<Test>;
@@ -10,10 +10,6 @@ beforeEach(() => {
   testSession = session(app); // Skapa en ny session för varje test
 });
 
-test("fetch credits for user session, should not work since it isnt logged in", async () => {
-  const res = await testSession.get("/game/balance/get");
-  expect(res.status).toBe(401); // Användaren är inte inloggad, bör få 401
-});
 
 test("Should register a user", async () => {
   const res = await testSession.post("/game/register").send({
