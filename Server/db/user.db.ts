@@ -35,8 +35,8 @@ userModel.init(
     //WTF?
     sequelize,
     tableName: "users",
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
+    //timestamps: false, // För mig funkar det inte med att ha dessa
+    //createdAt: false,
+    //updatedAt: false,
   }
 );
