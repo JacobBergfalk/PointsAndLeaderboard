@@ -28,6 +28,7 @@ function TopLeaderboard() {
 
         if (!response.data || response.data.length === 0) {
           console.error("Ingen data hittades");
+          setData([...localPlayers]);
           return;
         }
 

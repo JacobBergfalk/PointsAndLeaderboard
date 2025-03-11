@@ -1,5 +1,5 @@
 import { useState, useEffect, act } from "react";
-import "../assets/styles.css"; // Se till att CSS-filen innehåller fade-animationen
+import "../assets/styles.css";
 
 const quotes = [
   "99% of Gamblers Quit Before They Win Big - Erik Earner",
