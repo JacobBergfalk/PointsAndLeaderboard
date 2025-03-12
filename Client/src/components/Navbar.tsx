@@ -14,7 +14,7 @@ function Navbar() {
             <Link to="/coinflip">Coin Flip</Link>
           </li>
           <li className="navbar_links">
-            <Link to="/game">Game</Link>
+            <Link to="/stockgrapf">stock</Link>
           </li>
         </ul>
       </nav>
