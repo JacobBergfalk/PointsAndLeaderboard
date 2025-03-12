@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 import Profile from "./pages/profile";
 import Index from "./pages/index";
 import CoinFlip from "./pages/coinflip";
+import StockChart from "./pages/StockChart";
 
 import { AuthProvider } from "./assets/AuthContext"; // Import the provider
 
@@ -37,6 +38,7 @@ function App() {
                 <Route path="/Index" element={<Index />} />
                 <Route path="/CoinFlip" element={<CoinFlip />} />
                 <Route path="/game" element={<Index />} />
+                <Route path="/stockgrapf" element={<StockChart />} />
               </Routes>
             </main>
             <div className="col-md-2">
