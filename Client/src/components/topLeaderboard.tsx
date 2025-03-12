@@ -7,6 +7,14 @@ interface Player {
   username: string;
   balance: number;
 }
+/**
+ * Displays the top 5 players with the highest balance.
+ * 
+ * - Fetches user data from the database and combines it with local sample data.
+ * - Retrieves the logged-in user's balance if authenticated.
+ * - Ensures "the house" always has a balance at least 100 coins higher than the highest user balance.
+ * - Sorts players in descending order and displays the top 5.
+ */
 
 function TopLeaderboard() {
   const [data, setData] = useState<Player[]>([]);
@@ -77,8 +85,8 @@ function TopLeaderboard() {
           const houseBalance = Math.max(5000, balance + 100);
 
           return [
-            ...prevData.filter((p) => p.username !== "the house"), // Ta bort gammal "the house"
-            { username: "the house", balance: houseBalance }, // Lägg till uppdaterad "the house"
+            ...prevData.filter((p) => p.username !== "the house"), // Takes away the old "the house"
+            { username: "the house", balance: houseBalance }, // Adds the new uppdated "the house"
           ];
         });
       }
@@ -96,7 +104,7 @@ function TopLeaderboard() {
         {sortedPlayers.slice(0, 5).map(
           (
             player,
-            index //Den här raden kod är magi jag förstår absolut ingenting vad som händer här tänker inte ens låtsas
+            index 
           ) => (
             <li key={index} className="leaderboard-item">
               <span className="rank">#{index + 1}</span>

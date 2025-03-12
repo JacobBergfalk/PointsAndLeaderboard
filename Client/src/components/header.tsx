@@ -12,6 +12,16 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
+/**
+ * The website's main header, including navigation and user authentication controls.
+ * 
+ * - Displays the site logo with a link to the homepage.
+ * - Rotates motivational quotes in the center.
+ * - Shows profile button if the user is logged in.
+ * - If not logged in, displays login and registration buttons.
+ * - Opens login and registration modals when buttons are clicked.
+ */
+
 function Header() {
   const [registrationOpen, setRegistrationOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);

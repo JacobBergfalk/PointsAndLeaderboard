@@ -1,7 +1,9 @@
 import "../assets/styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
-
+/**
+ * Navigation bar consisting of Home, Coin Flip and Game
+ */
 function Navbar() {
   return (
     <>
