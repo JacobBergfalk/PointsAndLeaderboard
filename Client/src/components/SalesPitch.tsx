@@ -1,9 +1,12 @@
 import "./salespitch.css";
 
+/**
+ * HTLM element at the bottom of the page
+ */
 function SalesPitch() {
   return (
     <div className="pitch-container">
-      <h2 className="title">Varför oss?</h2>
+      <h2 className="title">Varför oss?</h2> 
       <div className="sections">
         {/* Section 1 */}
         <div className="pitch-cards">

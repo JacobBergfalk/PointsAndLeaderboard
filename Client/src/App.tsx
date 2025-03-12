@@ -2,12 +2,9 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// hugo hustle
-
 import Header from "./components/header";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import Footer from "./components/Footer";
 
 import Profile from "./pages/profile";
 import Index from "./pages/index";
@@ -43,7 +40,6 @@ function App() {
               <Sidebar />
             </div>
           </div>
-          <Footer />
         </div>
       </Router>
     </AuthProvider>

@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import "../pages/index.css";
 import axios from "axios";
 import { useAuth } from "../assets/AuthContext";
-
+/**
+ * The leaderboard displays the top 5 players based on their balance.
+ * Fetches the user's balance if logged in and updates the leaderboard dynamically.
+ */
 function topLeaderboard() {
   const { username, loggedIn } = useAuth();
   const [balance, setBalance] = useState<number>();
