@@ -1,5 +1,7 @@
 import "./salespitch.css";
-
+/**
+ * HTML element at the bottom of the page
+ */
 function SalesPitch() {
   return (
     <div className="pitch-container">

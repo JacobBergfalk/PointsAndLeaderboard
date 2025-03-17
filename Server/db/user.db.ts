@@ -31,6 +31,7 @@ userModel.init(
     },
   },
 
+  
   {
     //WTF?
     sequelize,
@@ -40,3 +41,4 @@ userModel.init(
     //updatedAt: false,
   }
 );
+

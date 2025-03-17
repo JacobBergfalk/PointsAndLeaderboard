@@ -7,7 +7,9 @@ const quotes = [
   "I Can Quit When I Want To - Hugo Hustle.",
   "You only need to win big once - Jean Paul",
 ];
-
+/**
+ * Rotates motivational quotes in the header
+ */
 function QuotesRotator() {
   const [index, setIndex] = useState(0);
   const [fade, setFade] = useState(true);
@@ -15,14 +17,14 @@ function QuotesRotator() {
   useEffect(() => {
     const interval = setInterval(() => {
       act(() => {
-        setFade(false); // Börja fade-out
+        setFade(false); // Start to fade-out
       });
 
       setTimeout(() => {
         setIndex((prevIndex) => (prevIndex + 1) % quotes.length);
         setFade(true); // Fade-in
-      }, 1000); // Vänta på fade-out innan byte
-    }, 5000); // 5 sekunder
+      }, 1000); // Wait for fade-out before switching
+    }, 5000); // 5 seconds
 
     return () => clearInterval(interval);
   }, []);

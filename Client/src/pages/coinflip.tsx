@@ -7,12 +7,22 @@ import axios from "axios";
 import { useAuth } from "../assets/AuthContext";
 axios.defaults.withCredentials = true;
 
+/**
+ * A simple coin flip game where users can bet coins
+ * 
+ * Requires the user to be logged in
+ * Sends a request to the backend to flip a coin with the chosen bet amount.
+ * Updates the balance based on the outcome (win or loss).
+ * Displays different images for win or loss and resets after 0.5 seconds.
+ * Gets and displays the user's balance
+ */
+
 function coinflip() {
   const { loggedIn } = useAuth();
 
   const [imageSrc, setImageSrc] = useState("images/coin.png");
   const [balance, setBalance] = useState<number | null>(null);
-  const [betAmount, setBetAmount] = useState(10); // Standardinsats
+  const [betAmount, setBetAmount] = useState(10); 
   const [error, setError] = useState<string | null>(null);
 
   const handleFlip = async () => {
@@ -32,13 +42,13 @@ function coinflip() {
       setBalance(balance);
 
       if (win) {
-        setImageSrc("images/thumbsup.png"); // Vinst
+        setImageSrc("images/thumbsup.png"); // Win
       } else {
-        setImageSrc("images/catlaughing.jpg"); // Förlust
+        setImageSrc("images/catlaughing.jpg"); // Lost
       }
 
       setTimeout(() => {
-        setImageSrc("images/coin.png"); // Återställ efter 0.5 sek
+        setImageSrc("images/coin.png"); // Reset after 0.5 sec
       }, 500);
     } catch (err) {
       setError("An error occurred while fetching data apa");
@@ -52,7 +62,7 @@ function coinflip() {
       try {
         const response = await axios.get(
           "http://localhost:8080/game/balance/get"
-        ); //Skickar get till localhosten
+        ); //Sends get to localhosten
 
         if (response.data.success) {
           const balance = response.data.balance;
