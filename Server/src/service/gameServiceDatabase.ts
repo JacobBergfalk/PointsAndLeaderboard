@@ -83,12 +83,12 @@ export class gameServiceDatabase implements IGameService {
   }
 
   async getUsers(req: any): Promise<any[]> {
-    try{
-    const users = await userModel.findAll();
-    return users;
-    } catch(error) {
+    try {
+      const users = await userModel.findAll();
+      return users;
+    } catch (error) {
       console.error("Error", error);
-      throw new Error("Could not fetch data")
+      throw new Error("Could not fetch data");
     }
   }
 
@@ -110,5 +110,69 @@ export class gameServiceDatabase implements IGameService {
     if (!user || user.balance < amount) return false;
     await user.update({ balance: user.balance - amount });
     return true;
+  }
+
+  /**
+   *
+   *
+   * @param req
+   * @param betAmount
+   * @returns
+   */
+  async openStockTrade(req: any, betAmount: number) {
+    try {
+      if (!req.session.username)
+        return { success: false, message: "Not logged in" };
+
+      const user = await userModel.findOne({
+        where: { username: req.session.username },
+      });
+
+      if (!user || user.balance < betAmount) {
+        return { success: false, message: "Insufficient balance" };
+      }
+      await user.update({ balance: user.balance - betAmount }); // removes betamount when placing bet
+
+      return {
+        success: true,
+        message: "Trade opened",
+      };
+    } catch (error) {
+      console.error("Error opening trade:", error);
+      return { success: false, message: "Error opening trade" };
+    }
+  }
+
+  async closeStockTrade(
+    req: any,
+    tradeType: "long" | "short",
+    betAmount: number,
+    entryPrice: number,
+    exitPrice: number
+  ) {
+    try {
+      if (!req.session.username)
+        return { success: false, message: "Not logged in" };
+
+      const user = await userModel.findOne({
+        where: { username: req.session.username },
+      });
+      if (!user) return { success: false, message: "User not found" };
+
+      let profitOrLoss = 0;
+      if (tradeType === "long") {
+        profitOrLoss = (exitPrice - entryPrice) * (betAmount / entryPrice);
+      } else if (tradeType === "short") {
+        profitOrLoss = (entryPrice - exitPrice) * (betAmount / entryPrice);
+      }
+
+      // Uppdatera saldo
+      await user.update({ balance: Math.round(user.balance + profitOrLoss) }); // updates and adds the rest of the betamount not lost
+
+      return { success: true, newBalance: user.balance, profitOrLoss };
+    } catch (error) {
+      console.error("Error closing trade:", error);
+      return { success: false, message: "Error closing trade" };
+    }
   }
 }

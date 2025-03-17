@@ -15,11 +15,21 @@ export interface IGameService {
 
   getCredits(req: any): Promise<Number | undefined>;
 
-  logoutUser(req: any): Promise<void>; //Denna kanske borde returnera något egentligen så vi vet om den är utloggad eller inte
+  logoutUser(req: any): Promise<void>;
 
   addCredits(req: any, amount: number): Promise<Boolean>;
 
   removeCredits(req: any, amount: number): Promise<Boolean>;
 
   getUsers(req: any): Promise<any[]>;
+
+  openStockTrade(req: any, betAmount: number): Promise<any>;
+
+  closeStockTrade(
+    req: any,
+    tradeType: "long" | "short",
+    betAmount: number,
+    entryPrice: number,
+    exitPrice: number
+  ): Promise<any>;
 }

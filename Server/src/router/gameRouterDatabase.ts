@@ -141,3 +141,31 @@ router.post("/balance/remove", async (req: Request, res: Response) => {
     });
   }
 });
+
+router.post("/stock/trade", async (req: Request, res: Response) => {
+  const { tradeType, betAmount, entryPrice } = req.body;
+  if (!tradeType || !betAmount || !entryPrice) {
+    res.status(400).json({ success: false, message: "Invalid request" });
+    return;
+  }
+
+  const result = await gameService.openStockTrade(req, betAmount);
+  res.json(result);
+});
+
+router.post("/stock/close", async (req: Request, res: Response) => {
+  const { tradeType, betAmount, entryPrice, exitPrice } = req.body;
+  if (!tradeType || !betAmount || !entryPrice || !exitPrice) {
+    res.status(400).json({ success: false, message: "Invalid request" });
+    return;
+  }
+
+  const result = await gameService.closeStockTrade(
+    req,
+    tradeType,
+    betAmount,
+    entryPrice,
+    exitPrice
+  );
+  res.json(result);
+});

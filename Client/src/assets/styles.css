@@ -113,16 +113,26 @@ img {
   justify-items: center;
   align-items: center;
   width: 800px;
-  height: 600px;
-  padding: 20px;
+  padding: 10px;
+}
+
+.graph-container canvas {
+  width: 800px;
+  height: 500px;
+  padding: 10px;
 }
 
 .graph-container h2 {
   font-size: 20px;
 }
 
+.active-bet {
+  display: grid;
+
+  justify-items: center;
+  align-items: center;
+}
+
 .button-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
 }
