@@ -1,12 +1,17 @@
 import express, { Request, Response } from "express";
-import { GameService } from "../service/gameService";
-import { authenticateUser } from "../model/account";
 import { IGameService } from "../service/IGameService";
 import { gameServiceDatabase } from "../service/gameServiceDatabase";
 
 export const router = express.Router();
 const gameService: IGameService = new gameServiceDatabase();
 
+/**
+ * Handles the coin flip game.
+ *
+ * - Requires the user to be logged in.
+ * - Validates the users choice and bet amount.
+ * - Executes the coin flip and returns the result.
+ */
 router.post("/coinflip", async (req: Request, res: Response) => {
   const user = await gameService.isLoggedIn(req);
   if (!user) {
@@ -36,32 +41,10 @@ router.post("/coinflip", async (req: Request, res: Response) => {
 
 // REGISTER LOGIN AND LOGOUT
 
-router.post("/register", async (req: Request, res: Response) => {
-  const { username, password } = req.body;
-
-  if (!username || !password) {
-    res
-      .status(409)
-      .json({ success: false, message: "Requires Username and password" });
-  }
-
-  if (await gameService.registerUser(username, password, req)) {
-    res.status(201).json({ success: true, message: "User registered" });
-  } else {
-    res.status(500).json({ success: false, message: "Something went wrong" });
-  }
-});
-
-router.get("/session", async (req: Request, res: Response) => {
-  const currentUser = await gameService.isLoggedIn(req);
-
-  if (currentUser) {
-    res.status(200).json({ loggedIn: true, username: currentUser });
-  } else {
-    res.status(401).json({ loggedIn: false, message: "User not logged in" });
-  }
-});
-
+/**
+ * Handles user registration.
+ *  - Validates if the request contains a valid username and password
+ */
 router.post("/login", async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
@@ -78,24 +61,67 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * Handles logout.
+ */
+router.post("/logout", async (req: Request, res: Response) => {
+  await gameService.logoutUser(req);
+  res.status(201).json({ success: true, message: "Logout successful" });
+});
+
+/**
+ * Handles user registration.
+ * - Validates if the request contains a valid username and password
+ */
+router.post("/register", async (req: Request, res: Response) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    res
+      .status(409)
+      .json({ success: false, message: "Requires Username and password" });
+  }
+
+  if (await gameService.registerUser(username, password, req)) {
+    res.status(201).json({ success: true, message: "User registered" });
+  } else {
+    res.status(500).json({ success: false, message: "Something went wrong" });
+  }
+});
+
+/**
+ * Returns the current session status.
+ * - True if a user is signed in otherwise false
+ */
+router.get("/session", async (req: Request, res: Response) => {
+  const currentUser = await gameService.isLoggedIn(req);
+
+  if (currentUser) {
+    res.status(200).json({ loggedIn: true, username: currentUser });
+  } else {
+    res.status(401).json({ loggedIn: false, message: "User not logged in" });
+  }
+});
+
+/**
+ * Returns a list of all users logged in the database
+ * -  Returns the list as a JSON
+ */
 router.get("/users", async (req: Request, res: Response) => {
   try {
     const users = await gameService.getUsers(req);
-    //console.log(users[0].data.username);
-    res.json(users); // Skickar användarna som JSON
+    res.json(users);
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-router.post("/logout", async (req: Request, res: Response) => {
-  await gameService.logoutUser(req);
-  res.status(201).json({ success: true, message: "Logout successful" });
-});
+// BALANCE
 
-// /BALANCE
-
+/**
+ * Retrieves the user's balance.
+ */
 router.get("/balance/get", async (req: Request, res: Response) => {
   const balance = await gameService.getCredits(req);
 
@@ -106,6 +132,10 @@ router.get("/balance/get", async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * Adds credits to the user's balance.
+ * - Validates if the request contains a valid number
+ */
 router.post("/balance/add", async (req: Request, res: Response) => {
   const { amount } = req.body;
   if (typeof amount !== "number") {
@@ -122,25 +152,12 @@ router.post("/balance/add", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/balance/remove", async (req: Request, res: Response) => {
-  const { amount } = req.body;
-  if (typeof amount !== "number") {
-    res.status(400).json({ success: false, message: "Invalid amount" });
-    return;
-  }
+// Stock Chart
 
-  const success = await gameService.removeCredits(req, amount);
-  if (success) {
-    const balance = await gameService.getCredits(req);
-    res.json({ success: true, balance });
-  } else {
-    res.status(400).json({
-      success: false,
-      message: "Insufficient credits or failed transaction",
-    });
-  }
-});
-
+/**
+ * Opens a stock trade.
+ * - Validates if the request contains a valid paramiters
+ */
 router.post("/stock/trade", async (req: Request, res: Response) => {
   const { tradeType, betAmount, entryPrice } = req.body;
   if (!tradeType || !betAmount || !entryPrice) {
@@ -152,6 +169,9 @@ router.post("/stock/trade", async (req: Request, res: Response) => {
   res.json(result);
 });
 
+/**
+ * Closes a stock trade.
+ */
 router.post("/stock/close", async (req: Request, res: Response) => {
   const { tradeType, betAmount, entryPrice, exitPrice } = req.body;
   if (!tradeType || !betAmount || !entryPrice || !exitPrice) {

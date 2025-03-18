@@ -19,8 +19,6 @@ export interface IGameService {
 
   addCredits(req: any, amount: number): Promise<Boolean>;
 
-  removeCredits(req: any, amount: number): Promise<Boolean>;
-
   getUsers(req: any): Promise<any[]>;
 
   openStockTrade(req: any, betAmount: number): Promise<any>;

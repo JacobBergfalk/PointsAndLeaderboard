@@ -5,6 +5,19 @@ import { userModel } from "../../db/user.db";
 import bcrypt from "bcrypt";
 
 export class gameServiceDatabase implements IGameService {
+  /**
+   * Simulates a coin flip game and detemines by a 50% chans if the user wins or loses.
+   *
+   * - Checks if the user is logged in.
+   * - Ensures the user has enough balance to place the bet.
+   * - Updates the user's balance accordingly.
+   *
+   * @param choice - The user's choice.
+   * @param betAmount - The amount wagered on the coin flip.
+   * @param req - The request object containing session data.
+   * @returns - The result of the game, or null if the user is not authenticated or has insufficient balance.
+   */
+
   async flipCoin(
     choice: "Heads" | "Tails",
     betAmount: number,
@@ -28,6 +41,14 @@ export class gameServiceDatabase implements IGameService {
     return { betAmount, potentialCreditWonOrLost: betAmount, win, choice };
   }
 
+  /**
+   * Logs in a user by verifying credentials with the current users and assigning a session with the username.
+   *
+   * @param username - The username.
+   * @param password - The password.
+   * @param req - The request object containing session data.
+   * @returns - true if login is successful, otherwise false.
+   */
   async loginUser(
     username: string,
     password: string,
@@ -40,7 +61,14 @@ export class gameServiceDatabase implements IGameService {
     }
     return false;
   }
-
+  /**
+   * Registers a new user in the database and log in the user
+   *
+   * @param username - The username
+   * @param password - The password
+   * @param req - The request object containing session data.
+   * @returns - true if registration is successful, otherwise false.
+   */
   async registerUser(
     username: string,
     password: string,
@@ -49,18 +77,16 @@ export class gameServiceDatabase implements IGameService {
     const existingUser = await userModel.findOne({ where: { username } });
     if (existingUser) return false;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await userModel.create({
-      username,
-      password: hashedPassword,
-      balance: 100,
-    }); // Default balance
-
+    addUser(username, password);
     req.session.username = username;
-
     return true;
   }
 
+  /**
+   * Logs out the user from the current session and deletes the session username
+   *
+   * @param req - The request object containing session data.
+   */
   async logoutUser(req: any) {
     if (req === null) {
       console.error("Logout : session is undefined");
@@ -70,10 +96,22 @@ export class gameServiceDatabase implements IGameService {
     delete req.session.username;
   }
 
+  /**
+   * Checks if a user is logged in.
+   *
+   * @param req - The request object containing session data.
+   * @returns - The username if logged in, otherwise null.
+   */
   async isLoggedIn(req: any): Promise<boolean> {
     return req.session && req.session.username ? req.session.username : null;
   }
 
+  /**
+   * Retrieves the user's balance.
+   *
+   * @param req - The request object containing session data.
+   * @returns - The user's balance, or undefined if not logged in.
+   */
   async getCredits(req: any): Promise<number | undefined> {
     if (!req.session.username) return undefined;
     const user = await userModel.findOne({
@@ -82,6 +120,12 @@ export class gameServiceDatabase implements IGameService {
     return user?.balance;
   }
 
+  /**
+   * Retrieves all registered users.
+   *
+   * @param req - The request object containing session data.
+   * @returns - A list of users.
+   */
   async getUsers(req: any): Promise<any[]> {
     try {
       const users = await userModel.findAll();
@@ -92,6 +136,13 @@ export class gameServiceDatabase implements IGameService {
     }
   }
 
+  /**
+   * Adds credits to the user's balance.
+   *
+   * @param req - The request object containing session data.
+   * @param amount - The amount to add.
+   * @returns - true if successful, otherwise false.
+   */
   async addCredits(req: any, amount: number): Promise<boolean> {
     if (!req.session.username) return false;
     const user = await userModel.findOne({
@@ -102,22 +153,12 @@ export class gameServiceDatabase implements IGameService {
     return true;
   }
 
-  async removeCredits(req: any, amount: number): Promise<boolean> {
-    if (!req.session.username) return false;
-    const user = await userModel.findOne({
-      where: { username: req.session.username },
-    });
-    if (!user || user.balance < amount) return false;
-    await user.update({ balance: user.balance - amount });
-    return true;
-  }
-
   /**
+   * Opens a stock trade.
    *
-   *
-   * @param req
-   * @param betAmount
-   * @returns
+   * @param req - The request object containing session data.
+   * @param betAmount - The amount wagered.
+   * @returns - The result of the trade.
    */
   async openStockTrade(req: any, betAmount: number) {
     try {
@@ -143,6 +184,16 @@ export class gameServiceDatabase implements IGameService {
     }
   }
 
+  /**
+   * Closes a stock trade.
+   *
+   * @param req - The request object containing session data.
+   * @param tradeType - Long or Short.
+   * @param betAmount - The amount wagered.
+   * @param entryPrice - Entry price of the trade.
+   * @param exitPrice - Exit price of the trade.
+   * @returns - The result of the trade.
+   */
   async closeStockTrade(
     req: any,
     tradeType: "long" | "short",
@@ -165,8 +216,6 @@ export class gameServiceDatabase implements IGameService {
       } else if (tradeType === "short") {
         profitOrLoss = (entryPrice - exitPrice) * (betAmount / entryPrice);
       }
-
-      // Uppdatera saldo
       await user.update({ balance: Math.round(user.balance + profitOrLoss) }); // updates and adds the rest of the betamount not lost
 
       return { success: true, newBalance: user.balance, profitOrLoss };
