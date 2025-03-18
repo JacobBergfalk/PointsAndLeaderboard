@@ -74,6 +74,7 @@ export class gameServiceDatabase implements IGameService {
     password: string,
     req: any
   ): Promise<boolean> {
+    // CHECK IF THERE IS A user already logged in
     const existingUser = await userModel.findOne({ where: { username } });
     if (existingUser) return false;
 

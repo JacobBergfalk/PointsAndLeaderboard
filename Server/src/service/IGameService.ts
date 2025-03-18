@@ -31,3 +31,6 @@ export interface IGameService {
     exitPrice: number
   ): Promise<any>;
 }
+
+//TODO
+// prevent more trade if already active trades

@@ -3,6 +3,8 @@ import { Line } from "react-chartjs-2";
 import "../assets/styles.css";
 import "../assets/buttons.css";
 
+import { useAuth } from "../assets/AuthContext";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -34,10 +36,14 @@ function StockChart() {
   const [tradeType, setTradeType] = useState<"long" | "short" | null>(null); // Typ av trade
   const [betAmount, setBetAmount] = useState(100); // Standardinsats
   const [currentProfitLoss, setCurrentProfitLoss] = useState(0);
+  const [balance, setBalance] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const buffer = 2; // Extra space
   const yMin = Math.floor(Math.min(...prices) - buffer);
   const yMax = Math.ceil(Math.max(...prices) + buffer);
+
+  const { loggedIn } = useAuth();
 
   /**
    * Updates stockprice every 0.5 seconds and simulates a change in price depending on the current trade
@@ -80,7 +86,6 @@ function StockChart() {
   /**
    *  Calculates the current "winnings" or losses based on the current stockprice and updates currentProfitLoss.
    *  The same calculation is used in the backend when the trade is closed.
-   *
    */
   useEffect(() => {
     if (tradePrice !== null && tradeType !== null) {
@@ -93,7 +98,14 @@ function StockChart() {
         profitLoss = (tradePrice - latestPrice) * (betAmount / tradePrice);
       }
 
-      setCurrentProfitLoss(Math.round(profitLoss));
+      const roundedProfitLoss = Math.round(profitLoss);
+      setCurrentProfitLoss(roundedProfitLoss);
+
+      // Closes the position if it reaches the bet amount
+      if (-roundedProfitLoss >= betAmount) {
+        alert("Bet has exceeded over 99% loss. Closing trade ");
+        handleClose();
+      }
     }
   }, [prices]);
 
@@ -101,43 +113,56 @@ function StockChart() {
    * Starts procedings to handle a long trade
    */
   const handleLong = () => {
-    setTradePrice(prices[prices.length - 1]); // Spara nuvarande pris
-    setTradeType("long");
-    handleTrade();
+    if (loggedIn) {
+      setTradePrice(prices[prices.length - 1]);
+      setTradeType("long");
+      handleTrade();
+    } else {
+      alert("Must be logged in");
+      return;
+    }
   };
   /**
    * Starts procedings to handle a short trade
-   *
    */
   const handleShort = () => {
-    setTradePrice(prices[prices.length - 1]);
-    setTradeType("short");
-    handleTrade();
+    if (loggedIn) {
+      setTradePrice(prices[prices.length - 1]);
+      setTradeType("short");
+      handleTrade();
+    } else {
+      alert("Must be logged in");
+      return;
+    }
   };
   /**
    * Sends a request to backend to start a trade.
    */
   const handleTrade = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/game/stock/trade",
-        {
-          betAmount: 10,
-        }
-      );
+    if (balance !== null && balance < betAmount) {
+      alert("Insufficient balance to place the trade.");
+      return;
+    } else {
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/game/stock/trade",
+          {
+            betAmount: betAmount,
+          }
+        );
 
-      if (response.data.success) {
-        setTradePrice(prices[prices.length - 1]);
-        setTradeType(tradeType);
+        if (response.data.success) {
+          setTradePrice(prices[prices.length - 1]);
+          setTradeType(tradeType);
+        }
+      } catch (error) {
+        console.error("Trade error", error);
       }
-    } catch (error) {
-      console.error("Trade error", error);
     }
   };
   /**
    *  Currects the pris in the opposite direction of the current trade
    *  Sends a request to backend to close the current trade.
-   *
    */
   const handleClose = async () => {
     if (tradeType) {
@@ -174,6 +199,8 @@ function StockChart() {
           setTradeType(null);
           setTradePrice(null);
           setCurrentProfitLoss(0);
+
+          getBalance();
         }
       } catch (error) {
         console.error("Close trade error", error);
@@ -189,6 +216,32 @@ function StockChart() {
       mainLineColor = tradeType === "long" ? "red" : "green";
     }
   }
+
+  /**
+   * Fetches and updates the user's balance from the backend.
+   * If the user is not logged in, returns.
+   *
+   */
+  const getBalance = async () => {
+    if (!loggedIn) return;
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/game/balance/get"
+      ); //Sends get to localhosten
+
+      if (response.data.success) {
+        const balance = response.data.balance;
+        setBalance(balance);
+      }
+    } catch (err) {
+      setError("An error occurred while fetching balance");
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getBalance();
+  }, [loggedIn]);
 
   return (
     <div className="container">
@@ -239,6 +292,9 @@ function StockChart() {
       {/* Region for buttons and bet amount */}
       <div className="active-bet">
         <div className="profit-loss-container">
+          <p className="bet-balance">
+            Balance: {balance !== null ? `${balance} coins` : "Loading..."}
+          </p>
           <p>
             Aktuell vinst/förlust:
             <span className={currentProfitLoss >= 0 ? "profit" : "loss"}>

@@ -1,11 +1,9 @@
 import express, { Request, Response } from "express";
 import { IGameService } from "../service/IGameService";
 import { gameServiceDatabase } from "../service/gameServiceDatabase";
-import { exit } from "process";
 
 export const router = express.Router();
 const gameService: IGameService = new gameServiceDatabase();
-
 /**
  * Handles the coin flip game.
  *
