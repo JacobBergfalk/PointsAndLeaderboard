@@ -1,0 +1,186 @@
+header,
+nav {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fa;
+  color: white;
+}
+
+.header img {
+  height: 7rem;
+  width: auto;
+}
+
+.user-buttons {
+  margin: 10px;
+}
+/* Coinflip */
+
+.container {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.game-images {
+  justify-self: center;
+}
+
+.bet-balance {
+  justify-self: center;
+}
+
+/* CSS */
+
+nav {
+  background-color: #e7e7e7;
+  border-radius: 10px;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  text-decoration: none;
+}
+
+nav ul li {
+  max-width: 120px;
+  width: 120px;
+  text-align: center;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+}
+
+footer {
+  background-color: #343a40;
+  color: white;
+}
+.header-images {
+  height: 7rem;
+  width: auto;
+}
+
+.game-images {
+  height: 10rem;
+  width: auto;
+}
+
+.sidebar-images {
+  width: 10rem;
+  height: auto;
+  max-width: 100%;
+}
+
+img {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.quote-content {
+  flex: 1;
+  text-align: center;
+}
+
+.quote-container {
+  text-align: center;
+  font-size: 1.2rem;
+  color: rgb(0, 0, 0);
+  transition: opacity 0.5s ease-in-out;
+}
+
+.quote-container p {
+  font-size: 15px;
+}
+
+.fade-in {
+  opacity: 1;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+/* Stock Graph*/
+
+.graph-container {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  width: 800px;
+  padding: 10px;
+}
+
+.graph-container canvas {
+  width: 800px;
+  height: 500px;
+  padding: 10px;
+}
+
+.graph-container h2 {
+  font-size: 20px;
+}
+
+.active-bet {
+  display: grid;
+
+  justify-items: center;
+  align-items: center;
+}
+
+.button-container {
+  display: flex;
+}
+
+/* SalesPitch */
+
+.pitch-container {
+  text-align: center;
+  padding: 40px 20px;
+  background: white;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #3a007d;
+  margin-bottom: 20px;
+}
+
+.sections {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.pitch-cards {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+  width: 280px;
+  text-align: center;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pitch-cards img {
+  width: 120px;
+  height: 120px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  color: #3a007d;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 10px;
+}

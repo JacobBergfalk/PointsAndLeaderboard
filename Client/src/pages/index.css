@@ -1,0 +1,118 @@
+.top-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-self: center;
+  width: 90%;
+  gap: 20px;
+  padding-bottom: 20px;
+}
+
+.latest-games {
+  flex: 1;
+  min-width: 400px;
+  max-width: 500px;
+  background: #f8f8f8;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.latest-games h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 15px;
+}
+
+.game-gallery-container {
+  background: #f8f8f8;
+  padding: 20px;
+  width: 90%;
+  margin: auto;
+  border-radius: 10px;
+}
+
+.game-gallery-container h2 {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.game-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.game-card {
+  width: 160px;
+  text-align: center;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.game-image {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.game-image:hover {
+  transform: scale(1.05);
+}
+
+.game-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #228b22;
+  margin-top: 5px;
+}
+
+/* Leaderboard */
+
+.leaderboard-wrapper {
+  padding: 20px;
+  justify-content: center;
+}
+.leaderboard-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.leaderboard {
+  list-style: none;
+  padding: 0;
+}
+
+.leaderboard-item {
+  display: flex;
+  justify-content: space-between;
+  background: #f8f9fa;
+  padding: 10px;
+  margin: 5px auto;
+  width: 300px;
+  border-radius: 5px;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.rank {
+  color: gold;
+}
+
+.username {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.balance {
+  color: green;
+}
