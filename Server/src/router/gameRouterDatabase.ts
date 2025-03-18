@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { IGameService } from "../service/IGameService";
 import { gameServiceDatabase } from "../service/gameServiceDatabase";
+import { exit } from "process";
 
 export const router = express.Router();
 const gameService: IGameService = new gameServiceDatabase();
@@ -14,6 +15,7 @@ const gameService: IGameService = new gameServiceDatabase();
  */
 router.post("/coinflip", async (req: Request, res: Response) => {
   const user = await gameService.isLoggedIn(req);
+
   if (!user) {
     res.status(401).json({ error: "Not logged in" }); // error for not logged in
     return;
@@ -21,8 +23,16 @@ router.post("/coinflip", async (req: Request, res: Response) => {
 
   const { choice, betAmount } = req.body;
 
+  if (!choice || !betAmount || typeof betAmount !== "number" || betAmount < 0) {
+    res
+      .status(400)
+      .json({ success: false, message: "Invalid request parameters" });
+    return;
+  }
+
   if (choice !== "Heads") {
-    res.status(406).json({ error: "Invalid choice" });
+    res.status(406).json({ success: false, error: "Invalid choice" });
+    return;
   }
 
   try {
@@ -35,7 +45,7 @@ router.post("/coinflip", async (req: Request, res: Response) => {
 
     res.json({ win: result.win, balance });
   } catch (error) {
-    res.status(500).json({ success: false });
+    res.status(500).json({ success: false, message: "Database error" });
   }
 });
 
@@ -54,10 +64,16 @@ router.post("/login", async (req: Request, res: Response) => {
       .json({ success: false, message: "Requires Username and password" });
   }
 
-  if (await gameService.loginUser(username, password, req)) {
-    res.status(201).json({ success: true, message: "Login successful" });
-  } else {
-    res.status(500).json({ success: false, message: "Something went wrong" });
+  try {
+    const success = await gameService.loginUser(username, password, req);
+    if (success) {
+      res.status(200).json({ success: true, message: "Login successful" });
+    } else {
+      res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ success: false, message: "Database error" });
   }
 });
 
@@ -65,8 +81,13 @@ router.post("/login", async (req: Request, res: Response) => {
  * Handles logout.
  */
 router.post("/logout", async (req: Request, res: Response) => {
-  await gameService.logoutUser(req);
-  res.status(201).json({ success: true, message: "Logout successful" });
+  try {
+    await gameService.logoutUser(req);
+    res.status(200).json({ success: true, message: "Logout successful" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 });
 
 /**
@@ -80,12 +101,21 @@ router.post("/register", async (req: Request, res: Response) => {
     res
       .status(409)
       .json({ success: false, message: "Requires Username and password" });
+    return;
   }
 
-  if (await gameService.registerUser(username, password, req)) {
-    res.status(201).json({ success: true, message: "User registered" });
-  } else {
-    res.status(500).json({ success: false, message: "Something went wrong" });
+  try {
+    const registered = await gameService.registerUser(username, password, req);
+    if (registered) {
+      res.status(201).json({ success: true, message: "User registered" });
+    } else {
+      res
+        .status(409)
+        .json({ success: false, message: "Username already exists" });
+    }
+  } catch (error) {
+    console.error("Registration error:", error);
+    res.status(500).json({ success: false, message: "Database error" });
   }
 });
 
@@ -94,12 +124,16 @@ router.post("/register", async (req: Request, res: Response) => {
  * - True if a user is signed in otherwise false
  */
 router.get("/session", async (req: Request, res: Response) => {
-  const currentUser = await gameService.isLoggedIn(req);
-
-  if (currentUser) {
-    res.status(200).json({ loggedIn: true, username: currentUser });
-  } else {
-    res.status(401).json({ loggedIn: false, message: "User not logged in" });
+  try {
+    const currentUser = await gameService.isLoggedIn(req);
+    if (currentUser) {
+      res.status(200).json({ loggedIn: true, username: currentUser });
+    } else {
+      res.status(401).json({ loggedIn: false, message: "User not logged in" });
+    }
+  } catch (error) {
+    console.error("Session check error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 });
 
@@ -123,12 +157,18 @@ router.get("/users", async (req: Request, res: Response) => {
  * Retrieves the user's balance.
  */
 router.get("/balance/get", async (req: Request, res: Response) => {
-  const balance = await gameService.getCredits(req);
-
-  if (balance !== null) {
-    res.status(200).json({ success: true, balance });
-  } else {
-    res.status(401).json({ success: false, message: "User not logged in" });
+  try {
+    const balance = await gameService.getCredits(req);
+    if (balance !== undefined) {
+      res.status(200).json({ success: true, balance });
+    } else {
+      res
+        .status(500)
+        .json({ success: false, message: "Could not retrieve balance" });
+    }
+  } catch (error) {
+    console.error("Balance error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 });
 
@@ -143,12 +183,19 @@ router.post("/balance/add", async (req: Request, res: Response) => {
     return;
   }
 
-  const success = await gameService.addCredits(req, amount);
-  if (success) {
-    const balance = await gameService.getCredits(req);
-    res.json({ success: true, balance });
-  } else {
-    res.status(400).json({ success: false, message: "Failed to add credits" });
+  try {
+    const success = await gameService.addCredits(req, amount);
+    if (success) {
+      const balance = await gameService.getCredits(req);
+      res.json({ success: true, balance });
+    } else {
+      res
+        .status(400)
+        .json({ success: false, message: "Failed to add credits" });
+    }
+  } catch (error) {
+    console.error("Balance add error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 });
 
@@ -160,13 +207,24 @@ router.post("/balance/add", async (req: Request, res: Response) => {
  */
 router.post("/stock/trade", async (req: Request, res: Response) => {
   const { tradeType, betAmount, entryPrice } = req.body;
-  if (!tradeType || !betAmount || !entryPrice) {
+  if (
+    !tradeType ||
+    !betAmount ||
+    !entryPrice ||
+    betAmount < 0 ||
+    entryPrice < 0
+  ) {
     res.status(400).json({ success: false, message: "Invalid request" });
     return;
   }
 
-  const result = await gameService.openStockTrade(req, betAmount);
-  res.json(result);
+  try {
+    const result = await gameService.openStockTrade(req, betAmount);
+    res.json(result);
+  } catch (error) {
+    console.error("Stock trade error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 });
 
 /**
@@ -174,17 +232,30 @@ router.post("/stock/trade", async (req: Request, res: Response) => {
  */
 router.post("/stock/close", async (req: Request, res: Response) => {
   const { tradeType, betAmount, entryPrice, exitPrice } = req.body;
-  if (!tradeType || !betAmount || !entryPrice || !exitPrice) {
+  if (
+    !tradeType ||
+    !betAmount ||
+    !entryPrice ||
+    !exitPrice ||
+    betAmount < 0 ||
+    entryPrice < 0 ||
+    exitPrice < 0
+  ) {
     res.status(400).json({ success: false, message: "Invalid request" });
     return;
   }
 
-  const result = await gameService.closeStockTrade(
-    req,
-    tradeType,
-    betAmount,
-    entryPrice,
-    exitPrice
-  );
-  res.json(result);
+  try {
+    const result = await gameService.closeStockTrade(
+      req,
+      tradeType,
+      betAmount,
+      entryPrice,
+      exitPrice
+    );
+    res.json(result);
+  } catch (error) {
+    console.error("Stock close error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 });
