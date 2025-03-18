@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
    */
   const checkLoginStatus = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/session");
+      const response = await axios.get("http://localhost:8080/game/session");
       setLoggedIn(response.data.loggedIn);
       setUsername(response.data.username || null);
     } catch (error) {
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
    */
   useEffect(() => {
     checkLoginStatus();
-  });
+  }, []);
 
   /**
    * Attempts to log in a user with provided credentials.
@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
    */
   const login = async (username: string, password: string) => {
     try {
-      const response = await axios.post("http://localhost:8080/login", {
+      const response = await axios.post("http://localhost:8080/game/login", {
         username,
         password,
       });
@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
    */
   const register = async (username: string, password: string) => {
     try {
-      const response = await axios.post("http://localhost:8080/register", {
+      const response = await axios.post("http://localhost:8080/game/register", {
         username,
         password,
       });
@@ -120,7 +120,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
    */
   const logout = async () => {
     try {
-      await axios.post("http://localhost:8080/logout");
+      await axios.post("http://localhost:8080/game/logout");
       setLoggedIn(false);
       setUsername(null);
     } catch (error) {

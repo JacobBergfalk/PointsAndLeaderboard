@@ -90,8 +90,7 @@ router.get("/users", async (req: Request, res: Response) => {
 });
 
 router.post("/logout", async (req: Request, res: Response) => {
-  const { username } = req.body;
-  await gameService.logoutUser(username);
+  await gameService.logoutUser(req);
   res.status(201).json({ success: true, message: "Logout successful" });
 });
 

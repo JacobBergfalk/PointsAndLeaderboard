@@ -62,7 +62,7 @@ export class gameServiceDatabase implements IGameService {
   }
 
   async logoutUser(req: any) {
-    if (req === undefined) {
+    if (req === null) {
       console.error("Logout : session is undefined");
       return;
     }
@@ -71,7 +71,7 @@ export class gameServiceDatabase implements IGameService {
   }
 
   async isLoggedIn(req: any): Promise<boolean> {
-    return req.session.username !== undefined;
+    return req.session && req.session.username ? req.session.username : null;
   }
 
   async getCredits(req: any): Promise<number | undefined> {
