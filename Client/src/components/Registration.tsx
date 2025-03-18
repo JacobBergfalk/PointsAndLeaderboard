@@ -11,10 +11,19 @@ interface modal {
   onOpenLogin: () => void;
 }
 
+/**
+ * Registration modal allows users to enter credentials to create an account
+ *
+ * - Includes validation for username and passwords.
+ * - Requires the user to check "Gamble Time?" before registering.
+ *
+ * @param param - State and handlers for the modal
+ * @returns The registration modal JSX if `isOpen` is true, otherwise `null`.
+ */
 function notificationModal(param: modal) {
   if (!param.isOpen) return null;
 
-  const { register } = useAuth();
+  const { register } = useAuth(); // use Register from authentication
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -23,11 +32,23 @@ function notificationModal(param: modal) {
   const [errorMessage, setErrorMessage] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
 
+  /**
+   * Switches from registration modal to login modal.
+   */
   const switchModal = () => {
     param.onClose();
     param.onOpenLogin();
   };
 
+  /**
+   * Handles user registration and validation before sending to the backend.
+   *
+   * - Requires a username and matching passwords.
+   * - Ensures the "Gamble Time?" checkbox is checked.
+   * - If registration is successful, the modal closes.
+   * - If registration fails, an error message is displayed.
+   *
+   */
   const handleRegister = async () => {
     setErrorMessage(""); // reset when clicking button
     setErrorPassword("");
@@ -57,7 +78,7 @@ function notificationModal(param: modal) {
 
     const success = await register(username, password);
     if (success) {
-      param.onClose(); // Stäng modalen om registreringen lyckades
+      param.onClose(); //Close modal if success
     } else {
       setErrorMessage("Registrering misslyckades.");
     }
@@ -65,9 +86,9 @@ function notificationModal(param: modal) {
 
   return (
     <div className="modal-overlay" onClick={param.onClose}>
-      {/* Opacity */}
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={param.onClose}>
+          {/* X button */}
           &times;
         </button>
 

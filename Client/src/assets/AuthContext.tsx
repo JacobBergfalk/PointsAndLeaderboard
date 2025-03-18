@@ -14,14 +14,30 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+/**
+ * Provides authentication state and functions to login, register, logout, and check login status.
+ *
+ * - Stores user authentication state loggedin and username
+ * - Provides functions to log in, register, and log out.
+ * - Automatically checks login status when the app loads.
+ *
+ * @param {React.ReactNode} children - The components that will have access to authentication state.
+ */
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
 
-  // Check if user is logged in on app load
+  /**
+   * Checks if the user is currently logged in.
+   *
+   * - Sends a request to /session to get login status.
+   * - If successful, updates loggedIn and username.
+   *
+   * @async
+   */
   const checkLoginStatus = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/game/session");
+      const response = await axios.get("http://localhost:8080/session");
       setLoggedIn(response.data.loggedIn);
       setUsername(response.data.username || null);
     } catch (error) {
@@ -29,14 +45,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  /**
+   * Runs checkLoginState at load to ensure login state is accurate.
+   */
   useEffect(() => {
     checkLoginStatus();
-  }, []);
+  });
 
-  // Login
+  /**
+   * Attempts to log in a user with provided credentials.
+   *
+   * - Sends request to /login with username and password.
+   * - If login is successful, updates loggedIn and username.
+   * - Returns true if login was successful, otherwise false.
+   *
+   * @param {string} username - The username for login.
+   * @param {string} password - The password for login.
+   * @returns {Promise<boolean>} Whether the login was successful.
+   */
   const login = async (username: string, password: string) => {
     try {
-      const response = await axios.post("http://localhost:8080/game/login", {
+      const response = await axios.post("http://localhost:8080/login", {
         username,
         password,
       });
@@ -53,10 +82,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return false;
     }
   };
-  // register
+
+  /**
+   * Attempts to register a new user with the provided credentials
+   *
+   * - Sends a request to /register with username and password.
+   * - If registration is successful, updates loggedIn and Username.
+   * - Returns true if registration was successful, otherwise false.
+   *
+   * @param {string} username - The desired username for registration.
+   * @param {string} password - The desired password for registration.
+   * @returns {Promise<boolean>} Whether the registration was successful.
+   */
   const register = async (username: string, password: string) => {
     try {
-      const response = await axios.post("http://localhost:8080/game/register", {
+      const response = await axios.post("http://localhost:8080/register", {
         username,
         password,
       });
@@ -72,10 +112,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return false;
   };
 
-  // Logout
+  /**
+   * Logs out the user by sending a request to logout.
+   *
+   * - If successful, sets loggedIn to false and clears username.
+   *
+   */
   const logout = async () => {
     try {
-      await axios.post("http://localhost:8080/game/logout");
+      await axios.post("http://localhost:8080/logout");
       setLoggedIn(false);
       setUsername(null);
     } catch (error) {
@@ -92,7 +137,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// Custom hook to use the AuthContext
+/**
+ * Hook to access authentication state and functions.
+ *
+ * @returns {AuthContextType} The authentication context values.
+ * @throws {Error} When used outside of this class.
+ */
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

@@ -2,7 +2,7 @@ import "../assets/styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
 /**
- * Navigation bar consisting of Home, Coin Flip and Game
+ * Navigation bar consisting of links to Home, Coin Flip and Game
  */
 function Navbar() {
   return (
@@ -16,7 +16,7 @@ function Navbar() {
             <Link to="/coinflip">Coin Flip</Link>
           </li>
           <li className="navbar_links">
-            <Link to="/stockgrapf">stock</Link>
+            <Link to="/stockchart">stock</Link>
           </li>
         </ul>
       </nav>

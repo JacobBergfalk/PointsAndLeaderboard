@@ -32,10 +32,10 @@ function App() {
               {/* Main page */}
               <Routes>
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/Index" element={<Index />} />
-                <Route path="/CoinFlip" element={<CoinFlip />} />
+                <Route path="/index" element={<Index />} />
+                <Route path="/coinflip" element={<CoinFlip />} />
                 <Route path="/game" element={<Index />} />
-                <Route path="/stockgrapf" element={<StockChart />} />
+                <Route path="/stockchart" element={<StockChart />} />
               </Routes>
             </main>
             <div className="col-md-2">

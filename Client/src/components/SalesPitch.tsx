@@ -1,4 +1,4 @@
-import "./salespitch.css";
+import "../assets/styles.css";
 /**
  * HTML element at the bottom of the page
  */

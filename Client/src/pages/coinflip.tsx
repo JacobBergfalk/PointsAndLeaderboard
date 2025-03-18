@@ -9,7 +9,7 @@ axios.defaults.withCredentials = true;
 
 /**
  * A simple coin flip game where users can bet coins
- * 
+ *
  * Requires the user to be logged in
  * Sends a request to the backend to flip a coin with the chosen bet amount.
  * Updates the balance based on the outcome (win or loss).
@@ -22,9 +22,19 @@ function coinflip() {
 
   const [imageSrc, setImageSrc] = useState("images/coin.png");
   const [balance, setBalance] = useState<number | null>(null);
-  const [betAmount, setBetAmount] = useState(10); 
+  const [betAmount, setBetAmount] = useState(10);
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Handles the coinflip logic
+   *
+   * - Checks if the user is logged in
+   * - Sends a request to the backend to flip the coin
+   * - Updates balance and shows a imaged based on response
+   * - Resets the image after 0.5 s
+   *
+   * @returns
+   */
   const handleFlip = async () => {
     try {
       if (!loggedIn) {
@@ -51,13 +61,17 @@ function coinflip() {
         setImageSrc("images/coin.png"); // Reset after 0.5 sec
       }, 500);
     } catch (err) {
-      setError("An error occurred while fetching data apa");
+      setError("An error occurred while fetching data");
       console.error(error);
     }
   };
 
+  /**
+   * Fetches and updates the user's balance from the backend.
+   * If the user is not logged in, returns.
+   *
+   */
   useEffect(() => {
-    // need to get fixed to account for a user not logged in
     const getBalance = async () => {
       try {
         const response = await axios.get(
@@ -67,24 +81,25 @@ function coinflip() {
         if (response.data.success) {
           const balance = response.data.balance;
           setBalance(balance);
-        } else {
         }
       } catch (err) {
-        setError("An error occurred while fetching data bitch");
+        setError("An error occurred while fetching balance");
         console.error(error);
       }
     };
 
-    getBalance(); // typescript lmao
+    if (!loggedIn) return;
+    getBalance();
   });
 
   return (
     <div className="container">
       <img className="game-images" src={imageSrc} alt="coin" />
-
+      {/* If balance === null, show Loading */}
       <p className="bet-balance">
         Balance: {balance !== null ? `${balance} coins` : "Loading..."}
       </p>
+
       <div className="bet-container">
         <label>Bet Amount:</label>
         <input
@@ -93,9 +108,7 @@ function coinflip() {
           onChange={(e) => setBetAmount(Number(e.target.value))}
         />
       </div>
-      <button className="" onClick={handleFlip}>
-        Vinn pengar knappen
-      </button>
+      <button onClick={handleFlip}>Vinn pengar knappen</button>
       {error && <p style={{ color: "red", fontSize: "12px" }}>{error}</p>}
     </div>
   );

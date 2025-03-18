@@ -1,6 +1,6 @@
 import QuotesRotator from "./QuoteRotator";
-import Registration from "../pages/Registration";
-import Login from "../pages/Login";
+import Registration from "./Registration";
+import Login from "./Login";
 
 import "../assets/styles.css";
 import "../assets/buttons.css";
@@ -14,7 +14,7 @@ axios.defaults.withCredentials = true;
 
 /**
  * The website's main header, including navigation and user authentication controls.
- * 
+ *
  * - Displays the site logo with a link to the homepage.
  * - Rotates motivational quotes in the center.
  * - Shows profile button if the user is logged in.
@@ -37,12 +37,12 @@ function Header() {
         <QuotesRotator />
       </div>
       <div className="user-buttons">
-        {loggedIn ? ( // Logged in
+        {loggedIn ? ( // Only displays profile if Logged In
           <Link to={"/profile"}>
             <button className="profile-button">Profile</button>
           </Link>
         ) : (
-          // Not Logged in
+          // Otherwise gives option to login or register
           <>
             <button className="login-button" onClick={() => setLoginOpen(true)}>
               Log In
@@ -51,7 +51,6 @@ function Header() {
               isOpen={loginOpen}
               onClose={() => setLoginOpen(false)}
               onOpenRegistration={() => setRegistrationOpen(true)}
-              //onLoginSuccess={() => setLoggedIn(true)} // Pass callback
             />
             <button
               className="registration-button"
@@ -63,7 +62,6 @@ function Header() {
               isOpen={registrationOpen}
               onClose={() => setRegistrationOpen(false)}
               onOpenLogin={() => setLoginOpen(true)}
-              //onRegisterSuccess={() => setLoggedIn(true)}
             />
           </>
         )}

@@ -11,25 +11,46 @@ interface modal {
   onOpenRegistration: () => void;
 }
 
+/**
+ *  Login modal where users can enter credentials and call
+ *  authentication to try to log in
+ *
+ * - If login is successful, the modal closes.
+ * - If login fails, an error message is displayed.
+ *
+ * @param param - state and handlers for the modal
+ * @returns The login modal JSX if `isOpen` is true, otherwise `null`.
+ */
 function LoginModal(param: modal) {
   if (!param.isOpen) return null;
 
-  const { login } = useAuth(); // Hämta login-funktionen
+  const { login } = useAuth(); // Use Login auth.
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  /**
+   * Switches from login modal to registration modal.
+   */
   const switchModal = () => {
     param.onClose();
     param.onOpenRegistration();
   };
 
+  /**
+   * Handles login process.
+   *
+   * - Sends username and password to the authentication.
+   * - If login is successful, the modal closes.
+   * - If login fails, an error message is shown.
+   */
   const handleLogin = async () => {
+    setErrorMessage("");
     try {
       const success = await login(username, password);
       if (success) {
-        param.onClose(); // Stäng modalen om inloggning lyckas
+        param.onClose(); // Close modal if success
       } else {
         setErrorMessage("Fel användarnamn eller lösenord!");
       }
@@ -40,9 +61,9 @@ function LoginModal(param: modal) {
 
   return (
     <div className="modal-overlay" onClick={param.onClose}>
-      {/* Opacity */}
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={param.onClose}>
+          {/* X button */}
           &times;
         </button>
 

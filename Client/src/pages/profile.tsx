@@ -6,29 +6,53 @@ import "../assets/styles.css";
 
 axios.defaults.withCredentials = true;
 
+/**
+ * Profile displays the users username and balance.
+ *
+ * - Allows the user to "Invest" to add credits.
+ * - Provides a logout button that redirects to the home page.
+ *
+ */
 function Profile() {
   const [balance, setBalance] = useState<number | null>(null);
   const { loggedIn, logout, username } = useAuth();
 
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Fetches and updates the user's balance from the backend.
+   * If the user is not logged in, returns.
+   *
+   */
   useEffect(() => {
-    const fetchUserBalance = async () => {
+    const getBalance = async () => {
       try {
-        if (!loggedIn) return;
-        // user balance
-        const balanceResponse = await axios.get(
+        const response = await axios.get(
           "http://localhost:8080/game/balance/get"
-        );
-        setBalance(balanceResponse.data.balance);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+        ); //Sends get to localhosten
+
+        if (response.data.success) {
+          const balance = response.data.balance;
+          setBalance(balance);
+        }
+      } catch (err) {
+        setError("An error occurred while fetching balance");
+        console.error(error);
       }
     };
 
-    fetchUserBalance();
-  }, [loggedIn]);
+    if (!loggedIn) return;
+    getBalance();
+  });
 
+  /**
+   * Adds 100 coins to the user's balance.
+   *
+   * - Sends a request to the backend to add credits.
+   * - If successful, updates the balance
+   * - If failed, displays an error message.
+   *
+   */
   const invest = async () => {
     try {
       const response = await axios.post(
@@ -64,8 +88,8 @@ function Profile() {
           </button>
         </Link>
       </div>
-
-      <p className="">Delete account</p>
+      {/* Does not lead anywhere at the moment. Meant to be able to delete an account */}
+      <p>Delete account</p>
     </div>
   );
 }
